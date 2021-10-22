@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ProceduralGenerationAlgorithms
 {
-    public static HashSet<Vector2Int> RandomWalk(Vector2Int startPosition, int walkLength)
+    public static HashSet<Vector2Int> RandomWalk(Vector2Int startPosition, int walkLength) // vrací náhodné pozice co dohromady tvoøí "cestu"
     {
         HashSet<Vector2Int> path = new HashSet<Vector2Int>();
 
