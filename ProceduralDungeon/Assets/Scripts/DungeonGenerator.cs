@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class DungeonGenerator : MonoBehaviour
 {
     [SerializeField]
-    private TilemapVisualizer tilemapVisualizer;
+    public TilemapVisualizer tilemapVisualizer;
 
     [SerializeField]
     private int iterations = 10;
