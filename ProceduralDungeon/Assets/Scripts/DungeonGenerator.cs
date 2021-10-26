@@ -10,12 +10,16 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     public TilemapVisualizer tilemapVisualizer;
 
+    //[SerializeField]
+    //private int iterations = 10;
+    //[SerializeField]
+    //private int walkLength = 10;
+
+    //[SerializeField]
+    //private bool startRandomlyEachIteration = true;
+
     [SerializeField]
-    private int iterations = 10;
-    [SerializeField]
-    private int walkLength = 10;
-    [SerializeField]
-    private bool startRandomlyEachIteration = true; // pokud true, pøi každé iteraci zaène Random Walk z náhodné pozice, kterou už jednou vybral
+    private RoomTypesSO roomParameters;
 
     [SerializeField]
     protected Vector2Int startPosition = Vector2Int.zero;
@@ -32,12 +36,12 @@ public class DungeonGenerator : MonoBehaviour
     {
         Vector2Int currentPosition = startPosition;
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
-        for (int i = 0; i < iterations; i++)
+        for (int i = 0; i < roomParameters.iterations; i++)
         {
-            HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.RandomWalk(currentPosition, walkLength); // postupnì generuje rùzné "cesty" pozic které pøidává do path (aby z toho vznikla nìjaká vìtší místnost)
+            HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.RandomWalk(currentPosition, roomParameters.walkLength); // postupnì generuje rùzné "cesty" pozic které pøidává do path (aby z toho vznikla nìjaká vìtší místnost)
             floorPositions.UnionWith(path); // zde sluèuje pozice z path do floorPositions aby floorPositions neobsahovaly duplikáty
 
-            if (startRandomlyEachIteration) currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count)); // vybere náhodnou pozici ze které rozbìhne další iteraci
+            if (roomParameters.startRandomlyEachIteration) currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count)); // vybere náhodnou pozici ze které rozbìhne další iteraci
         }
 
         return floorPositions;
