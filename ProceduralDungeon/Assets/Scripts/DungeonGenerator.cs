@@ -29,7 +29,8 @@ public class DungeonGenerator : MonoBehaviour
         HashSet<Vector2Int> floorPositions = RunRandomWalk();
 
         tilemapVisualizer.Clear();
-        tilemapVisualizer.PaintFloorTiles(floorPositions); // vykreslí pozice z floorPositions
+        tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
+        WallGenerator.GenerateWalls(floorPositions, tilemapVisualizer); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
     }
 
     private HashSet<Vector2Int> RunRandomWalk() // vrací pozice pro floor tiles
