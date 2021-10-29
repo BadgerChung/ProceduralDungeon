@@ -10,30 +10,32 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     public TilemapVisualizer tilemapVisualizer;
 
-    //[SerializeField]
-    //private int iterations = 10;
-    //[SerializeField]
-    //private int walkLength = 10;
-
-    //[SerializeField]
-    //private bool startRandomlyEachIteration = true;
-
     [SerializeField]
     private RoomTypesSO roomParameters;
 
     [SerializeField]
     protected Vector2Int startPosition = Vector2Int.zero;
 
-    public void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro floor tiles a uloží je do floorPositions
+    [SerializeField]
+    protected int corridorLength = 14, corridorCount = 5;
+
+    [SerializeField]
+    [Range(0.1f, 1)]
+    protected float roomPercent = 0.8f;
+
+    [SerializeField]
+    protected RoomTypesSO corridorParameters;
+
+    public virtual void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro floor tiles a uloží je do floorPositions
     {
-        HashSet<Vector2Int> floorPositions = RunRandomWalk();
+        HashSet<Vector2Int> floorPositions = RunRandomWalk(roomParameters);
 
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
         WallGenerator.GenerateWalls(floorPositions, tilemapVisualizer); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
     }
 
-    private HashSet<Vector2Int> RunRandomWalk() // vrací pozice pro floor tiles
+    private HashSet<Vector2Int> RunRandomWalk(RoomTypesSO roomParameters) // vrací pozice pro floor tiles
     {
         Vector2Int currentPosition = startPosition;
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
@@ -46,5 +48,20 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         return floorPositions;
+    }
+
+    public void RunCorridorGeneration()
+    {
+        CorridorGenerator.startPosition = startPosition;
+        CorridorGenerator.corridorCount = corridorCount;
+        CorridorGenerator.corridorLength = corridorLength;
+
+        HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+        
+        CorridorGenerator.GenerateCorridors(floorPositions);
+
+        tilemapVisualizer.Clear();
+        tilemapVisualizer.GenerateFloorTiles(floorPositions);
+        WallGenerator.GenerateWalls(floorPositions, tilemapVisualizer);
     }
 }

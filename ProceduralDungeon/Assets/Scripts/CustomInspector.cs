@@ -15,5 +15,10 @@ public class CustomInspector : Editor
             ((DungeonGenerator)target).tilemapVisualizer.Clear();
             ((DungeonGenerator)target).RunProceduralGeneration();
         }
+        if (GUILayout.Button("Generate corridors"))
+        {
+            ((DungeonGenerator)target).tilemapVisualizer.Clear();
+            ((DungeonGenerator)target).RunCorridorGeneration();
+        }
     }
 }

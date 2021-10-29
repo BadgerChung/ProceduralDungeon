@@ -15,4 +15,14 @@ public static class Direction2D
     {
         return directionsList[Random.Range(0, directionsList.Count)];
     }
+
+    public static Vector2Int TurnRight(Vector2Int lastDirection)
+    {
+        return new Vector2Int(lastDirection.y, -lastDirection.x);
+    }
+
+    public static Vector2Int TurnLeft(Vector2Int lastDirection)
+    {
+        return new Vector2Int(-lastDirection.y, lastDirection.x);
+    }
 }
