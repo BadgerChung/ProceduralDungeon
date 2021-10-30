@@ -17,27 +17,35 @@ public class DungeonGenerator : MonoBehaviour
     protected Vector2Int startPosition = Vector2Int.zero;
 
     [SerializeField]
-    protected int corridorLength = 14, corridorCount = 5;
+    protected int corridorLength,
+                  minBranchLength, maxBranchLength, // poèet koridorù v jedné vìtvi
+                  minBranchCount, maxBranchCount; // poèet vìtví
 
     [SerializeField]
     [Range(0.1f, 1)]
     protected float roomPercent = 0.8f;
 
-    [SerializeField]
-    protected RoomTypesSO corridorParameters;
+    public static DungeonGenerator instance { get; private set; }
 
-    public virtual void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro floor tiles a uloží je do floorPositions
+    private void Awake()
     {
-        HashSet<Vector2Int> floorPositions = RunRandomWalk(roomParameters);
+        instance = this;
+    }
+
+    public void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro floor tiles a uloží je do floorPositions
+    {
+        instance = this;
+
+        HashSet<Vector2Int> floorPositions = RunRandomWalk(startPosition);
 
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
         WallGenerator.GenerateWalls(floorPositions, tilemapVisualizer); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
     }
 
-    private HashSet<Vector2Int> RunRandomWalk(RoomTypesSO roomParameters) // vrací pozice pro floor tiles
+    public HashSet<Vector2Int> RunRandomWalk(Vector2Int position) // vrací pozice pro floor tiles
     {
-        Vector2Int currentPosition = startPosition;
+        Vector2Int currentPosition = position;
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         for (int i = 0; i < roomParameters.iterations; i++)
         {
@@ -52,13 +60,28 @@ public class DungeonGenerator : MonoBehaviour
 
     public void RunCorridorGeneration()
     {
+        instance = this;
+
+        int branchCount = Random.Range(minBranchCount, maxBranchCount+1);
+        int[] branches = new int[branchCount];
+
+        for (int i = 0; i < branchCount; i++)
+        {
+            branches[i] = Random.Range(minBranchLength, maxBranchLength+1);
+        }
+
         CorridorGenerator.startPosition = startPosition;
-        CorridorGenerator.corridorCount = corridorCount;
         CorridorGenerator.corridorLength = corridorLength;
+        CorridorGenerator.roomPercent = roomPercent;
+        CorridorGenerator.branches = branches;
 
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
-        
-        CorridorGenerator.GenerateCorridors(floorPositions);
+        HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
+
+        CorridorGenerator.GenerateCorridors(floorPositions, potentialRoomPositions);
+
+        HashSet<Vector2Int> roomPositions = CorridorGenerator.GenerateRooms(potentialRoomPositions);
+        floorPositions.UnionWith(roomPositions);
 
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions);

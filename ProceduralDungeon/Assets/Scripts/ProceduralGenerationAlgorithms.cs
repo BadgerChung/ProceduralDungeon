@@ -23,7 +23,7 @@ public static class ProceduralGenerationAlgorithms
     }
 
     public static List<Vector2Int> RandomWalkCorridor(Vector2Int startPosition, int corridorLength, Vector2Int direction) // používá se list, protože hashset neuchovává poøadí elementù,
-                                                                                                    // a v tomto pøípadì je potøeba zachovat první a poslední pozici
+                                                                                                                          // a v tomto pøípadì je potøeba zachovat první a poslední pozici
     {
         List<Vector2Int> corridor = new List<Vector2Int>();
         Vector2Int currentPosition = startPosition;
