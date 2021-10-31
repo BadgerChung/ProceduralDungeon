@@ -32,7 +32,7 @@ public class DungeonGenerator : MonoBehaviour
         instance = this;
     }
 
-    public void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro floor tiles a uloží je do floorPositions
+    public void RunProceduralGeneration() // z funkce RunRandomWalk dostane pozice pro podlahové tily a uloží je do floorPositions
     {
         instance = this;
 
