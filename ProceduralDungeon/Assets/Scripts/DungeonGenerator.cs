@@ -67,7 +67,7 @@ public class DungeonGenerator : MonoBehaviour
 
         for (int i = 0; i < branchCount; i++)
         {
-            branches[i] = Random.Range(minBranchLength, maxBranchLength+1);
+            branches[i] = Random.Range(minBranchLength, maxBranchLength+1); // každé vìtvi v branches se pøidìlí náhodná délka (poèet koridorù)
         }
 
         CorridorGenerator.startPosition = startPosition;
@@ -79,8 +79,11 @@ public class DungeonGenerator : MonoBehaviour
         HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
 
         CorridorGenerator.GenerateCorridors(floorPositions, potentialRoomPositions);
-
         HashSet<Vector2Int> roomPositions = CorridorGenerator.GenerateRooms(potentialRoomPositions);
+
+        HashSet<Vector2Int> deadEnds = CorridorGenerator.FindDeadEnds(floorPositions);
+        CorridorGenerator.FixDeadEnds(deadEnds, roomPositions);
+
         floorPositions.UnionWith(roomPositions);
 
         tilemapVisualizer.Clear();

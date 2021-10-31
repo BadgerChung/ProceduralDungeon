@@ -33,6 +33,7 @@ public static class CorridorGenerator
                 if (number == 1) direction = Direction2D.TurnLeft(direction); // náhodnì se vybírá, zdali smìr vektoru dalšího corridoru se otoèí o 90° doprava, doleva nebo bude pokraèovat ve stejném smìru (rovnì)
                 else if (number == 2) direction = Direction2D.TurnRight(direction); // díky tomu se však nikdy nezaène vracet zpìt (opaèným smìrem) na pùvodní zaèátek
             }
+
             currentPosition = potentialRoomPositions.ElementAt(Random.Range(0, potentialRoomPositions.Count()));
         }
     }
@@ -52,5 +53,36 @@ public static class CorridorGenerator
         }
 
         return roomPositions;
+    }
+
+    public static HashSet<Vector2Int> FindDeadEnds(HashSet<Vector2Int> floorPositions)
+    {
+        HashSet<Vector2Int> deadEnds = new HashSet<Vector2Int>();
+        foreach (Vector2Int position in floorPositions)
+        {
+            int neighbourCount = 0;
+            foreach (Vector2Int direction in Direction2D.directionsList)
+            {
+                if (floorPositions.Contains(position + direction)) // prohledá pozice do všech smìrù a pokud nìjaká z nich už je ve floorPositions, je to soused
+                    neighbourCount++;
+            }
+
+            if (neighbourCount == 1) // pokud je soused jen jeden, znamená to, že je to slepý koridor, protože jediný soused je první pozice smìrem k zaèátku koridoru
+                deadEnds.Add(position);
+        }
+
+        return deadEnds;
+    }
+
+    public static void FixDeadEnds(HashSet<Vector2Int> deadEnds, HashSet<Vector2Int> roomPositions)
+    {
+        foreach (Vector2Int position in deadEnds)
+        {
+            if (roomPositions.Contains(position) == false) // pokud pozice slepého koridoru není pozicí pro místnost, stane se pozicí pro místnost
+            {
+                HashSet<Vector2Int> roomPosition = DungeonGenerator.instance.RunRandomWalk(position);
+                roomPositions.UnionWith(roomPosition);
+            }
+        }
     }
 }
