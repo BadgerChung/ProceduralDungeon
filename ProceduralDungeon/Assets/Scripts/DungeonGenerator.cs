@@ -41,7 +41,7 @@ public class DungeonGenerator : MonoBehaviour
 
         for (int i = 0; i < branchCount; i++)
         {
-            branches[i] = Random.Range(minBranchLength, maxBranchLength + 1); // každé vìtvi v branches se pøidìlí náhodná délka (poèet koridorù)
+            branches[i] = Random.Range(minBranchLength, maxBranchLength + 1); // každé vìtvi v branches se pøidìlí poèet koridorù
         }
 
         CorridorGenerator.startPosition = startPosition;

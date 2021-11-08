@@ -16,7 +16,12 @@ public class TilemapVisualizer : MonoBehaviour
         GenerateTiles(floorPositions, floorTilemap, floorTile);
     }
 
-    private void GenerateTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile) // pomocí foreach a funkce PaintSingleTile zajistí vykreslení tilù na dané pozice
+    public void GenerateWallTiles(HashSet<Vector2Int> wallPositions) // volá funkci GenerateTiles() s parametry pro generaci zdí
+    {
+        GenerateTiles(wallPositions, wallsTilemap, wallTile);
+    }
+
+    private void GenerateTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile) // pomocí foreach volá funkci PaintSingleTile() pro každý prvek v dané kolekci positions
     {
         foreach (Vector2Int position in positions)
         {
@@ -24,18 +29,13 @@ public class TilemapVisualizer : MonoBehaviour
         }
     }
 
-    private void GenerateSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position) // pøevede pozici tilu na speciální pozice pro tily a vykreslí ho
+    private void GenerateSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position) // pøevede dané pozice na cell pozice pro danou tilemap a uloží je do ní
     {
         Vector3Int tilePosition = tilemap.WorldToCell((Vector3Int)position);
         tilemap.SetTile(tilePosition, tile);
     }
 
-    public void GenerateWallTiles(HashSet<Vector2Int> wallPositions)
-    {
-        GenerateTiles(wallPositions, wallsTilemap, wallTile);
-    }
-
-    public void Clear() // vyèistí obrazovku od vykreslených tilù
+    public void Clear() // vyèistí všechny tilemap od vykreslených tile
     {
         floorTilemap.ClearAllTiles();
         wallsTilemap.ClearAllTiles();

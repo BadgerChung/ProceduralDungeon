@@ -14,7 +14,7 @@ public static class CorridorGenerator
     [Range(0.1f, 1)]
     public static float roomPercent;
 
-    public static void GenerateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions)
+    public static void GenerateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions) // do promìnné floorPositions ukládá pozice vygenerované koridorù, do promìnné potentialRoomPositions ukládá pozice koncù koridorù, neboli potenciální pozice pro místnosti
     {
         Vector2Int currentPosition = startPosition;
         Vector2Int direction = Direction2D.GetRandomDirection();
@@ -25,20 +25,23 @@ public static class CorridorGenerator
             for (int i = 0; i < branches[x]; i++)
             {
                 List<Vector2Int> path = ProceduralGenerationAlgorithms.RandomWalkCorridor(currentPosition, corridorLength, direction);
-                currentPosition = path[path.Count - 1]; // -1 aby další currentPosition byla stejná jako poslední pozice path (poøadí v listu jde od 0, Count zaèíná od 1)
+                currentPosition = path[path.Count - 1]; // od path.Count se odeèítá 1, aby další promìnná currentPosition byla stejná jako poslední pozice promìnné path (promìnná path je typu List, poøadí v List zaèíná od 0, vlastnost Count zaèíná od 1)
                 potentialRoomPositions.Add(currentPosition);
                 floorPositions.UnionWith(path);
 
-                int number = Random.Range(0, 3); // tento blok øeší, aby se nevytvoøily dva corridory v sobì (napø. jeden by se vygeneroval doprava, a druhý by se vygeneroval zpátky doleva)
-                if (number == 1) direction = Direction2D.TurnLeft(direction); // náhodnì se vybírá, zdali smìr vektoru dalšího corridoru se otoèí o 90° doprava, doleva nebo bude pokraèovat ve stejném smìru (rovnì)
-                else if (number == 2) direction = Direction2D.TurnRight(direction); // díky tomu se však nikdy nezaène vracet zpìt (opaèným smìrem) na pùvodní zaèátek
+                int number = Random.Range(0, 3); // 
+                if (number == 1) direction = Direction2D.TurnLeft(direction);
+                else if (number == 2) direction = Direction2D.TurnRight(direction);
+                // tento blok kódu øeší, aby se nevygenerovaly duplikáty pozic koridorù (napø. jeden by se vygeneroval smìrem doprava, a druhý by se vygeneroval na stejné pozice zpátky smìrem doleva)
+                // náhodnì se vybírá, zdali smìr vektoru dalšího koridoru se otoèí o 90° doprava, doleva nebo bude pokraèovat ve stejném smìru (rovnì)
+                // díky tomu se pozice dalšího koridoru nikdy nevygenerují zpìt (opaèným smìrem) na pozice již vygenerované
             }
 
             currentPosition = potentialRoomPositions.ElementAt(Random.Range(0, potentialRoomPositions.Count()));
         }
     }
 
-    public static HashSet<Vector2Int> GenerateRooms(HashSet<Vector2Int> potentialRoomPositions) // vrací pozice místností
+    public static HashSet<Vector2Int> GenerateRooms(HashSet<Vector2Int> potentialRoomPositions) // z promìnné potentialRoomPositions vybere pozice pro místnosti a vrací je
     {
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
         int roomsCount = Mathf.RoundToInt(potentialRoomPositions.Count * roomPercent); // vybere poèet místností podle roomPercent
@@ -48,14 +51,14 @@ public static class CorridorGenerator
                                                                                                                 // poté z nich vybere nìkolik prvkù podle roomsCount
         foreach (Vector2Int roomPosition in rooms)
         {
-            HashSet<Vector2Int> roomFloor = DungeonGenerator.instance.RunRandomWalk(roomPosition);
+            HashSet<Vector2Int> roomFloor = DungeonGenerator.instance.RunRandomWalk(roomPosition); // na každé pozici z List rooms vygeneruje pozice pro místnosti pomocí funkce RunRandomWalk()
             roomPositions.UnionWith(roomFloor);
         }
 
         return roomPositions;
     }
 
-    public static HashSet<Vector2Int> FindDeadEnds(HashSet<Vector2Int> floorPositions)
+    public static HashSet<Vector2Int> FindDeadEnds(HashSet<Vector2Int> floorPositions) // vrací pozice koncù slepých koridorù
     {
         HashSet<Vector2Int> deadEnds = new HashSet<Vector2Int>();
         foreach (Vector2Int position in floorPositions)
@@ -63,7 +66,7 @@ public static class CorridorGenerator
             int neighbourCount = 0;
             foreach (Vector2Int direction in Direction2D.directionsList)
             {
-                if (floorPositions.Contains(position + direction)) // prohledá pozice do všech smìrù a pokud nìjaká z nich už je ve floorPositions, je to soused
+                if (floorPositions.Contains(position + direction)) // prohledá pozice z floorPositions do všech smìrù a pokud nìjaká z nich už ve floorPositions je, zvìtší se neighbourCount o 1
                     neighbourCount++;
             }
 
@@ -74,11 +77,11 @@ public static class CorridorGenerator
         return deadEnds;
     }
 
-    public static void FixDeadEnds(HashSet<Vector2Int> deadEnds, HashSet<Vector2Int> roomPositions)
+    public static void FixDeadEnds(HashSet<Vector2Int> deadEnds, HashSet<Vector2Int> roomPositions) // øeší slepé koridory tím, že pozice z promìnné deadEnds pøidá do pozic pro místnosti
     {
         foreach (Vector2Int position in deadEnds)
         {
-            if (roomPositions.Contains(position) == false) // pokud pozice slepého koridoru není pozicí pro místnost, stane se pozicí pro místnost
+            if (roomPositions.Contains(position) == false) // pokud pozice konce slepého koridoru není pozicí pro místnost, stane se pozicí pro místnost
             {
                 HashSet<Vector2Int> roomPosition = DungeonGenerator.instance.RunRandomWalk(position);
                 roomPositions.UnionWith(roomPosition);
