@@ -11,7 +11,7 @@ public class TilemapVisualizer : MonoBehaviour
     [SerializeField]
     private TileBase floorTile, wallTile;
 
-    public void GenerateFloorTiles(IEnumerable<Vector2Int> floorPositions) // obsahuje pozice podlahových tilù a následnì volá funkce pro jejich vykreslení
+    public void GenerateFloorTiles(IEnumerable<Vector2Int> floorPositions) // volá funkci GenerateTiles() s parametry pro generaci podlahy
     {
         GenerateTiles(floorPositions, floorTilemap, floorTile);
     }
