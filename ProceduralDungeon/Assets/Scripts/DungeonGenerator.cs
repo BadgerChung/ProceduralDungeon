@@ -60,9 +60,11 @@ public class DungeonGenerator : MonoBehaviour
 
         floorPositions.UnionWith(roomPositions);
 
+        HashSet<Vector2Int> wallPositions = WallFinder.FindWallPositions(floorPositions, Direction2D.directionsList);
+
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
-        WallGenerator.GenerateWalls(floorPositions, tilemapVisualizer); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
+        tilemapVisualizer.GenerateWallTiles(wallPositions); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
     }
 
     public HashSet<Vector2Int> RunRandomWalk(Vector2Int position) // vrací pozice pro floor tiles

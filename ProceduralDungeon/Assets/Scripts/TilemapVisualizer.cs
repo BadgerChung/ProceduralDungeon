@@ -30,9 +30,9 @@ public class TilemapVisualizer : MonoBehaviour
         tilemap.SetTile(tilePosition, tile);
     }
 
-    internal void GenerateSingleWall(Vector2Int position)
+    public void GenerateWallTiles(HashSet<Vector2Int> wallPositions)
     {
-        GenerateSingleTile(wallsTilemap, wallTile, position);
+        GenerateTiles(wallPositions, wallsTilemap, wallTile);
     }
 
     public void Clear() // vyèistí obrazovku od vykreslených tilù
