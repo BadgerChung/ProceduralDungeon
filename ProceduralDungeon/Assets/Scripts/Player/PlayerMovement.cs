@@ -8,20 +8,22 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 5f;
     private Vector2 direction;
 
-    private float activeMoveSpeed;
-    private bool dash = false;
-    [SerializeField]
-    private float dashSpeed = 15f, dashLength = 0.5f;
-    [SerializeField]
-    private float dashCooldown = 3f;
-    private float dashCounter, dashCooldownCounter;
-
     [SerializeField]
     private Rigidbody2D rb;
 
+    RaycastHit2D raycast;
+
+    [SerializeField]
+    private LayerMask dashLayerMask;
+
+    private bool dash;
+    [SerializeField]
+    private float dashLength = 10f;
+    private Vector2 dashPosition;
+
     private void Start()
     {
-        activeMoveSpeed = moveSpeed;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -39,45 +41,32 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-
         direction = new Vector2(moveX, moveY).normalized;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            dash = true;
 
         if (moveX != 0)
             transform.localScale = new Vector3(moveX, 1, 1);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            dash = true;
     }
 
     private void Move()
     {
-        rb.velocity = new Vector2(direction.x * activeMoveSpeed, direction.y * activeMoveSpeed);
+        rb.velocity = direction * moveSpeed;
     }
 
     private void Dash()
     {
         if (dash)
         {
-            if (dashCooldownCounter <= 0 && dashCounter <= 0)
-            {
-                activeMoveSpeed = dashSpeed;
-                dashCounter = dashLength;
-            }
+            dashPosition = (Vector2)transform.position + direction * dashLength;
+
+            raycast = Physics2D.Raycast(transform.position, direction, dashLength, dashLayerMask);
+            if (raycast.collider != null)
+                dashPosition = raycast.point;
+
+            rb.MovePosition(dashPosition);
+            dash = false;
         }
-
-        if (dashCounter > 0)
-        {
-            dashCounter -= Time.deltaTime;
-
-            if (dashCounter <= 0)
-            {
-                dash = false;
-                activeMoveSpeed = moveSpeed;
-                dashCooldownCounter = dashCooldown;
-            }
-        }
-
-        if (dashCooldownCounter > 0)
-            dashCooldownCounter -= Time.deltaTime;
     }
 }
