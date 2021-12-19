@@ -28,6 +28,7 @@ public static class CorridorGenerator
                 currentPosition = path[path.Count - 1]; // od path.Count se odeèítá 1, aby další promìnná currentPosition byla stejná jako poslední pozice promìnné path (promìnná path je typu List, poøadí v List zaèíná od 0, vlastnost Count zaèíná od 1)
                 potentialRoomPositions.Add(currentPosition);
                 floorPositions.UnionWith(path);
+                DungeonGenerator.instance.corridorsPositions.UnionWith(path);
 
                 int number = Random.Range(0, 3); // 
                 if (number == 1) direction = Direction2D.TurnLeft(direction);
@@ -49,9 +50,29 @@ public static class CorridorGenerator
         List<Vector2Int> rooms = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomsCount).ToList(); // nejdøíve seøadí prvky z potentialRoomPositions pomocí guid 
                                                                                                                 // (guid každému prvku pøiøadí náhodné jedineèné id, díky èemuž se prvky seøadí náhodnì)
                                                                                                                 // poté z nich vybere nìkolik prvkù podle roomsCount
+        HashSet<Vector2Int> startRoomFloor = new HashSet<Vector2Int>(); // tento blok vytváøí pozice pro startovní místnost dle parametrù v DungeonGenerator
+        for (int y = -DungeonGenerator.instance.startRoomRectHeight; y < DungeonGenerator.instance.startRoomRectHeight + 1; y++)
+        {
+            for (int x = -DungeonGenerator.instance.startRoomRectWidth; x < DungeonGenerator.instance.startRoomRectWidth + 1; x++)
+            {
+                startRoomFloor.Add(new Vector2Int(x, y));
+            }
+        }
+        roomPositions.UnionWith(startRoomFloor);
+        DungeonGenerator.instance.roomsPositions.Add(startRoomFloor);
+
         foreach (Vector2Int roomPosition in rooms)
         {
             HashSet<Vector2Int> roomFloor = DungeonGenerator.instance.RunRandomWalk(roomPosition); // na každé pozici z List rooms vygeneruje pozice pro místnosti pomocí funkce RunRandomWalk()
+            if(roomPosition == Vector2Int.zero) // kdyby se na startovní pozici vygenerovala jiná místnost, tak se pøidá ke startovní místnosti
+            {
+                DungeonGenerator.instance.roomsPositions[0].UnionWith(roomFloor);
+            }
+            else
+            {
+                DungeonGenerator.instance.roomsPositions.Add(roomFloor); // všechny ostatní místnosti se pøidávájí do listu kvùli možnosti rozlišování jednotlivých místností
+            }
+            
             roomPositions.UnionWith(roomFloor);
         }
 

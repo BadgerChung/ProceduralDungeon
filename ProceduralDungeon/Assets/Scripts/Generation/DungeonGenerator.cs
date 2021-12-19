@@ -25,7 +25,14 @@ public class DungeonGenerator : MonoBehaviour
     [Range(0.1f, 1)]
     protected float roomPercent = 0.8f;
 
+    [SerializeField]
+    public int startRoomRectHeight, startRoomRectWidth;
+
     public static DungeonGenerator instance { get; private set; }
+
+    public List<HashSet<Vector2Int>> roomsPositions;
+
+    public HashSet<Vector2Int> corridorsPositions;
 
     private void Awake()
     {
@@ -43,6 +50,9 @@ public class DungeonGenerator : MonoBehaviour
         {
             branches[i] = Random.Range(minBranchLength, maxBranchLength + 1); // každé vìtvi v branches se pøidìlí poèet koridorù
         }
+
+        roomsPositions = new List<HashSet<Vector2Int>>();
+        corridorsPositions = new HashSet<Vector2Int>();
 
         CorridorGenerator.startPosition = startPosition;
         CorridorGenerator.corridorLength = corridorLength;
