@@ -15,6 +15,14 @@ public class Inventory
         slots = new Item[slotCount];
     }
 
+    public Item SwitchSlot(int slot, Item item) // prohodí item ze slotu jednoho inventáøe do slotu druhého inventáøe
+    {
+        Item ret = slots[slot];
+        slots[slot] = item;
+        inventoryChanged?.Invoke(this);
+        return ret;
+    }
+
     public bool TryAddItem(Item item)
     {
         for(int i = 0; i < slots.Length; i++)
