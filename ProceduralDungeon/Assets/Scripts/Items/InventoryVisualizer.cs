@@ -39,7 +39,7 @@ public class InventoryVisualizer : MonoBehaviour
     private List<Slot> playerInvSlots;
 
     // WIP
-    private Inventory openInventory;
+    public Inventory openInventory;
 
     private List<Slot> openInvSlots;
 
@@ -129,7 +129,7 @@ public class InventoryVisualizer : MonoBehaviour
     public void Update()
     {
         cursorFollower.transform.position = Input.mousePosition;
-        if(Input.GetKeyDown(KeyCode.E))
+        /*if(Input.GetKeyDown(KeyCode.E))
         {
             if(openInventory == null)
             {
@@ -139,7 +139,7 @@ public class InventoryVisualizer : MonoBehaviour
             {
                 CloseInventory();
             }
-        }
+        }*/
         if(Input.GetMouseButtonDown(0) && hoveringOver != null)
         {
             if(Input.GetKey(KeyCode.LeftShift))
@@ -218,6 +218,7 @@ public class InventoryVisualizer : MonoBehaviour
             if (i < inv.slots.Length) openInvSlots[i].gameObject.SetActive(true);
             else openInvSlots[i].gameObject.SetActive(false);
         }
+        OpenInventoryChanged(openInventory);
     }
 
     public void CloseInventory()

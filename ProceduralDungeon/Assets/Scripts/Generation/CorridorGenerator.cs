@@ -106,6 +106,7 @@ public static class CorridorGenerator
             {
                 HashSet<Vector2Int> roomPosition = DungeonGenerator.instance.RunRandomWalk(position);
                 roomPositions.UnionWith(roomPosition);
+                DungeonGenerator.instance.roomsPositions.Add(roomPosition);
             }
         }
     }

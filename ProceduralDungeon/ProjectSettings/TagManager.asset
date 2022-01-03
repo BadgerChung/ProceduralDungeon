@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Walls
-  - 
+  - Interactable
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Environment
     uniqueID: 20986465
+    locked: 0
+  - name: Objects
+    uniqueID: 3515946035
     locked: 0
   - name: Creatures
     uniqueID: 3830672031

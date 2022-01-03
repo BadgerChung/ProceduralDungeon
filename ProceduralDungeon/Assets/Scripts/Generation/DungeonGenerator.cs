@@ -28,19 +28,31 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     public int startRoomRectHeight, startRoomRectWidth;
 
+    public int seed = 6;
+
     public static DungeonGenerator instance { get; private set; }
 
     public List<HashSet<Vector2Int>> roomsPositions;
 
     public HashSet<Vector2Int> corridorsPositions;
 
+    [SerializeField]
+    public Item item;
+
     private void Awake()
     {
         instance = this;
     }
 
+    private void Start()
+    {
+        RunProceduralGeneration();
+    }
+
     public void RunProceduralGeneration()
     {
+        Random.InitState(seed);
+
         instance = this;
 
         int branchCount = Random.Range(minBranchCount, maxBranchCount + 1);
@@ -75,6 +87,17 @@ public class DungeonGenerator : MonoBehaviour
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
         tilemapVisualizer.GenerateWallTiles(wallPositions); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
+
+        ObjectGenerator.InitObjectGenerator(roomsPositions);
+        HashSet<Vector2Int> chestPostitions = ObjectGenerator.GenerateChestPositions();
+        GameObject chestPrefab = Resources.Load<GameObject>("Prefabs/chest");
+        foreach(Vector2Int position in chestPostitions)
+        {
+            GameObject chest = Instantiate(chestPrefab, (Vector2)position, Quaternion.identity);
+            ChestInteractable cInteractable = chest.GetComponentInChildren<ChestInteractable>();
+            cInteractable.inventory = new Inventory(10);
+            cInteractable.inventory.TryAddItem(item);
+        }
     }
 
     public HashSet<Vector2Int> RunRandomWalk(Vector2Int position) // vrací pozice pro floor tiles
