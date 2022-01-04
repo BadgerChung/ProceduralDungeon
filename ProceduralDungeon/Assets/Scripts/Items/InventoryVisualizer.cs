@@ -25,6 +25,9 @@ public class InventoryVisualizer : MonoBehaviour
     [SerializeField]
     private Image cursorFollower;
 
+    [SerializeField]
+    private SpriteRenderer handImage;
+
     private Inventory playerInventory;
     private int selectedSlot;
 
@@ -44,9 +47,14 @@ public class InventoryVisualizer : MonoBehaviour
     private List<Slot> openInvSlots;
 
     private Dictionary<string, Sprite> loadedSprites; // Naètené sprity itemù
+    private Dictionary<string, Sprite> loadedHandSprites;
 
     public Slot hoveringOver;
     private Item holding;
+
+    private RectTransform textHolder;
+    private Text header;
+    private Text content;
 
     private void Awake()
     {
@@ -55,6 +63,11 @@ public class InventoryVisualizer : MonoBehaviour
         playerInvSlots = new List<Slot>();
         openInvSlots = new List<Slot>();
         loadedSprites = new Dictionary<string, Sprite>();
+        loadedHandSprites = new Dictionary<string, Sprite>();
+
+        textHolder = cursorFollower.transform.GetChild(0).GetComponent<RectTransform>();
+        header = textHolder.transform.GetChild(0).GetComponent<Text>();
+        content = textHolder.transform.GetChild(1).GetComponent<Text>();
 
         // Vytvoøí všechny sloty hráèova inventáøe
         for (int i = 0; i < playerSlots; i++)
@@ -80,6 +93,11 @@ public class InventoryVisualizer : MonoBehaviour
         foreach(Sprite sprite in sprites)
         {
             loadedSprites.Add(sprite.name, sprite);
+        }
+        Sprite[] handSprites = Resources.LoadAll<Sprite>("HandItemSprites/");
+        foreach (Sprite sprite in handSprites)
+        {
+            loadedHandSprites.Add(sprite.name, sprite);
         }
 
         // Setup hráèova inventáøe (objektu)
@@ -109,6 +127,8 @@ public class InventoryVisualizer : MonoBehaviour
             if(i == selectedSlot && inv == playerInventory)
             {
                 invSlots[i].GetComponent<Image>().color = selectedSlotColor;
+                if (selectedItem != null) handImage.sprite = GetHandSpriteByName(selectedItem.systemName + "_hand");
+                else handImage.sprite = null;
             }
             else
             {
@@ -129,17 +149,40 @@ public class InventoryVisualizer : MonoBehaviour
     public void Update()
     {
         cursorFollower.transform.position = Input.mousePosition;
-        /*if(Input.GetKeyDown(KeyCode.E))
+
+        float pivotX = Input.mousePosition.x;
+        if (pivotX > Screen.width / 2) pivotX = 1;
+        else pivotX = 0;
+        textHolder.pivot = new Vector2(pivotX, 1);
+
+        if (hoveringOver != null && holding == null)
         {
-            if(openInventory == null)
+            textHolder.gameObject.SetActive(true);
+            if (playerInvSlots.Contains(hoveringOver))
             {
-                OpenInventory(new Inventory(10));
+                Item item = playerInventory.slots[playerInvSlots.IndexOf(hoveringOver)];
+                if(item != null)
+                {
+                    header.text = item.displayName;
+                    content.text = item.lore;
+                }
+                else textHolder.gameObject.SetActive(false);
             }
-            else
+            else if (openInvSlots.Contains(hoveringOver))
             {
-                CloseInventory();
+                Item item = openInventory.slots[openInvSlots.IndexOf(hoveringOver)];
+                if (item != null)
+                {
+                    header.text = item.displayName;
+                    content.text = item.lore;
+                }
+                else textHolder.gameObject.SetActive(false);
             }
-        }*/
+        }
+        else
+        {
+            textHolder.gameObject.SetActive(false);
+        }
         if(Input.GetMouseButtonDown(0) && hoveringOver != null)
         {
             if(Input.GetKey(KeyCode.LeftShift))
@@ -150,6 +193,55 @@ public class InventoryVisualizer : MonoBehaviour
             {
                 SwitchHoldingItemWithSlot(); // manuální prohození itemu z jednoho inventáøe do druhého
             }
+        }
+        
+        if(Input.mouseScrollDelta.y != 0)
+        {
+            selectedSlot -= (int)Input.mouseScrollDelta.y;
+            if (selectedSlot >= playerInventory.slots.Length) selectedSlot = 0;
+            if (selectedSlot < 0) selectedSlot = playerInventory.slots.Length - 1;
+            PlayerInventoryChanged(playerInventory);
+        }
+
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            selectedSlot = 0;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            selectedSlot = 1;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha3))
+        {
+            selectedSlot = 2;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha4))
+        {
+            selectedSlot = 3;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha5))
+        {
+            selectedSlot = 4;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha6))
+        {
+            selectedSlot = 5;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha7))
+        {
+            selectedSlot = 6;
+            PlayerInventoryChanged(playerInventory);
+        }
+        if (Input.GetKey(KeyCode.Alpha8))
+        {
+            selectedSlot = 7;
+            PlayerInventoryChanged(playerInventory);
         }
     }
 
@@ -186,11 +278,11 @@ public class InventoryVisualizer : MonoBehaviour
         }
         if (holding == null)
         {
-            cursorFollower.gameObject.SetActive(false);
+            cursorFollower.enabled = false;
         }
         else
         {
-            cursorFollower.gameObject.SetActive(true);
+            cursorFollower.enabled = true;
             cursorFollower.sprite = GetSpriteByName(holding.systemName);
         }
     }
@@ -204,6 +296,18 @@ public class InventoryVisualizer : MonoBehaviour
         else
         {
             return loadedSprites["default"];
+        }
+    }
+
+    public Sprite GetHandSpriteByName(string name)
+    {
+        if (loadedHandSprites.ContainsKey(name))
+        {
+            return loadedHandSprites[name];
+        }
+        else
+        {
+            return loadedHandSprites["default_hand"];
         }
     }
 
@@ -225,6 +329,7 @@ public class InventoryVisualizer : MonoBehaviour
     {
         if (openInventory == null) return;
         openInventory.inventoryChanged -= OpenInventoryChanged;
+        if (openInvSlots.Contains(hoveringOver)) hoveringOver = null;
         openInventory = null;
         openSlotsParent.SetActive(false);
     }

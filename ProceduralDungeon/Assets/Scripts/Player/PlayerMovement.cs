@@ -41,10 +41,14 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
+
+        float cursorX = Input.mousePosition.x;
+        if (cursorX > Screen.width / 2) cursorX = 1;
+        else cursorX = -1;
+
         direction = new Vector2(moveX, moveY).normalized;
 
-        if (moveX != 0)
-            transform.localScale = new Vector3(moveX, 1, 1);
+        transform.localScale = new Vector3(cursorX, 1, 1);
 
         if (Input.GetKeyDown(KeyCode.Space))
             dash = true;

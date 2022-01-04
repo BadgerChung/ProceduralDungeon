@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d919471cd72938418e0c52d0fe6bb35, type: 3}
   m_Name: WandItem_Wand
   m_EditorClassIdentifier: 
-  displayName: Wand
-  systemName: wand
+  displayName: Basic Wand
+  systemName: default_wand
+  lore: 'Damage: 10
+
+
+    Damages your ego.'
   damage: 10
+  projectile: {fileID: 318792785543021037, guid: aead3194507f265459dc5a234b84f494, type: 3}
+  projectileSpeed: 15
+  projectilesPerSecond: 10

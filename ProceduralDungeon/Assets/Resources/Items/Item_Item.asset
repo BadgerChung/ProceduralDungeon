@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c19cafea98c56c4f9834e64b558ecff, type: 3}
   m_Name: Item_Item
   m_EditorClassIdentifier: 
-  displayName: Kokot
-  systemName: kokot
+  displayName: Vodka
+  systemName: vodka
+  lore: Replenishes 10 HP

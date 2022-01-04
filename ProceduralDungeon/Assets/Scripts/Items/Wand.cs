@@ -6,4 +6,8 @@ public class Wand : Item
 
     public int damage;
 
+    public GameObject projectile;
+    public float projectileSpeed;
+    public float projectilesPerSecond;
+
 }
