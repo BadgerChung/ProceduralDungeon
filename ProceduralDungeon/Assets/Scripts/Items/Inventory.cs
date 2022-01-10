@@ -23,7 +23,7 @@ public class Inventory
         return ret;
     }
 
-    public bool TryAddItem(Item item)
+    public bool TryAddItem(Item item) // zkusí pøidat pøedmìt do volného slotu
     {
         for(int i = 0; i < slots.Length; i++)
         {

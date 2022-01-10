@@ -148,6 +148,7 @@ public class InventoryVisualizer : MonoBehaviour
 
     public void Update()
     {
+        // zobrazuje popisky u pøedmìtù
         cursorFollower.transform.position = Input.mousePosition;
 
         float pivotX = Input.mousePosition.x;
@@ -194,7 +195,8 @@ public class InventoryVisualizer : MonoBehaviour
                 SwitchHoldingItemWithSlot(); // manuální prohození itemu z jednoho inventáøe do druhého
             }
         }
-        
+
+        // pøepínání mezi sloty
         if(Input.mouseScrollDelta.y != 0)
         {
             selectedSlot -= (int)Input.mouseScrollDelta.y;
