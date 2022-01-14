@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,7 @@ public class InventoryVisualizer : MonoBehaviour
 
     private Inventory playerInventory;
     private int selectedSlot;
+    public bool isInventoryOpen { get; private set; }
 
     public Item selectedItem
     {
@@ -148,6 +150,13 @@ public class InventoryVisualizer : MonoBehaviour
 
     public void Update()
     {
+        // otevøení/zavøení inv. pomocí tlaèítka
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (isInventoryOpen) CloseInventory();
+            else OpenInventory();
+        }
+
         // zobrazuje popisky u pøedmìtù
         cursorFollower.transform.position = Input.mousePosition;
 
@@ -156,7 +165,7 @@ public class InventoryVisualizer : MonoBehaviour
         else pivotX = 0;
         textHolder.pivot = new Vector2(pivotX, 1);
 
-        if (hoveringOver != null && holding == null)
+        if (hoveringOver != null && holding == null && isInventoryOpen)
         {
             textHolder.gameObject.SetActive(true);
             if (playerInvSlots.Contains(hoveringOver))
@@ -184,7 +193,7 @@ public class InventoryVisualizer : MonoBehaviour
         {
             textHolder.gameObject.SetActive(false);
         }
-        if(Input.GetMouseButtonDown(0) && hoveringOver != null)
+        if(Input.GetMouseButtonDown(0) && hoveringOver != null && isInventoryOpen)
         {
             if(Input.GetKey(KeyCode.LeftShift))
             {
@@ -314,21 +323,39 @@ public class InventoryVisualizer : MonoBehaviour
     }
 
     // WIP
-    public void OpenInventory(Inventory inv)
+    public void OpenInventory(Inventory inv=null)
     {
+        isInventoryOpen = true;
+        playerSlotsParent.transform.localScale = Vector3.one;
         openInventory = inv;
-        openInventory.inventoryChanged += OpenInventoryChanged;
-        openSlotsParent.SetActive(true);
-        for(int i = 0; i < 20; i++)
+        if(openInventory != null)
         {
-            if (i < inv.slots.Length) openInvSlots[i].gameObject.SetActive(true);
-            else openInvSlots[i].gameObject.SetActive(false);
+            openInventory.inventoryChanged += OpenInventoryChanged;
+            openSlotsParent.SetActive(true);
+            for (int i = 0; i < 20; i++)
+            {
+                if (i < inv.slots.Length) openInvSlots[i].gameObject.SetActive(true);
+                else openInvSlots[i].gameObject.SetActive(false);
+            }
+            OpenInventoryChanged(openInventory);
         }
-        OpenInventoryChanged(openInventory);
     }
 
     public void CloseInventory()
     {
+        // holding
+        if(holding != null)
+        {
+            if(!playerInventory.TryAddItem(holding))
+            {
+                openInventory.TryAddItem(holding);
+            }
+            holding = null;
+            cursorFollower.enabled = false;
+        }
+
+        isInventoryOpen = false;
+        playerSlotsParent.transform.localScale = 0.5f * Vector3.one;
         if (openInventory == null) return;
         openInventory.inventoryChanged -= OpenInventoryChanged;
         if (openInvSlots.Contains(hoveringOver)) hoveringOver = null;

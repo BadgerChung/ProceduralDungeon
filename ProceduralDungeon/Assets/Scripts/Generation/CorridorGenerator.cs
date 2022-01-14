@@ -47,7 +47,7 @@ public static class CorridorGenerator
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
         int roomsCount = Mathf.RoundToInt(potentialRoomPositions.Count * roomPercent); // vybere poèet místností podle roomPercent
 
-        List<Vector2Int> rooms = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomsCount).ToList(); // nejdøíve seøadí prvky z potentialRoomPositions pomocí guid 
+        List<Vector2Int> rooms = potentialRoomPositions.OrderBy(x => Random.Range(0,99999)).Take(roomsCount).ToList(); // nejdøíve seøadí prvky z potentialRoomPositions pomocí guid 
                                                                                                                 // (guid každému prvku pøiøadí náhodné jedineèné id, díky èemuž se prvky seøadí náhodnì)
                                                                                                                 // poté z nich vybere nìkolik prvkù podle roomsCount
         HashSet<Vector2Int> startRoomFloor = new HashSet<Vector2Int>(); // tento blok vytváøí pozice pro startovní místnost dle parametrù v DungeonGenerator

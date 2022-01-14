@@ -53,6 +53,8 @@ public class DungeonGenerator : MonoBehaviour
     {
         Random.InitState(seed);
 
+        //Debug.Log(Random.Range(0,20) + " " + Random.Range(0, 20));
+
         instance = this;
 
         int branchCount = Random.Range(minBranchCount, maxBranchCount + 1);

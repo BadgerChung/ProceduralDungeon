@@ -15,7 +15,7 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && !InventoryVisualizer.instance.isInventoryOpen)
         {
             Item item = InventoryVisualizer.instance.selectedItem;
             if (item is Wand)
@@ -28,7 +28,7 @@ public class PlayerCombat : MonoBehaviour
                 }
             }
         }
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0) && !InventoryVisualizer.instance.isInventoryOpen)
         {
             Item item = InventoryVisualizer.instance.selectedItem;
             if (item is Wand)
@@ -51,6 +51,8 @@ public class PlayerCombat : MonoBehaviour
         direction.Normalize();
         GameObject projectile = Instantiate(wand.projectile, transform.position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        direction += new Vector2(Random.Range(-wand.spread, wand.spread), Random.Range(-wand.spread, wand.spread));
+        direction.Normalize();
         rb.velocity = direction * wand.projectileSpeed;
         Destroy(projectile, 3f);
     }
