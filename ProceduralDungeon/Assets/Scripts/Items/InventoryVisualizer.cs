@@ -48,7 +48,8 @@ public class InventoryVisualizer : MonoBehaviour
 
     private List<Slot> openInvSlots;
 
-    private Dictionary<string, Sprite> loadedSprites; // Naètené sprity itemù
+    // Naètené sprity itemù
+    private Dictionary<string, Sprite> loadedSprites; 
     private Dictionary<string, Sprite> loadedHandSprites;
 
     public Slot hoveringOver;
@@ -157,7 +158,6 @@ public class InventoryVisualizer : MonoBehaviour
             else OpenInventory();
         }
 
-        // zobrazuje popisky u pøedmìtù
         cursorFollower.transform.position = Input.mousePosition;
 
         float pivotX = Input.mousePosition.x;
@@ -165,10 +165,11 @@ public class InventoryVisualizer : MonoBehaviour
         else pivotX = 0;
         textHolder.pivot = new Vector2(pivotX, 1);
 
+        // zobrazuje popisky u pøedmìtù
         if (hoveringOver != null && holding == null && isInventoryOpen)
         {
             textHolder.gameObject.SetActive(true);
-            if (playerInvSlots.Contains(hoveringOver))
+            if (playerInvSlots.Contains(hoveringOver)) // hráèùv inventáø
             {
                 Item item = playerInventory.slots[playerInvSlots.IndexOf(hoveringOver)];
                 if(item != null)
@@ -178,7 +179,7 @@ public class InventoryVisualizer : MonoBehaviour
                 }
                 else textHolder.gameObject.SetActive(false);
             }
-            else if (openInvSlots.Contains(hoveringOver))
+            else if (openInvSlots.Contains(hoveringOver)) // jiný inventáø (bedna, ...)
             {
                 Item item = openInventory.slots[openInvSlots.IndexOf(hoveringOver)];
                 if (item != null)
@@ -343,7 +344,8 @@ public class InventoryVisualizer : MonoBehaviour
 
     public void CloseInventory()
     {
-        // holding
+        // pokud hráè drží kurzorem pøedmìt a snaží se zavøít inventáø, nejdøíve se tato funkce pokusí vložit pøedmìt do hráèova inventáøe,
+        // pokud to nejde, pokusí se ho vložit do otevøeného inventáøe (bedny, ...)
         if(holding != null)
         {
             if(!playerInventory.TryAddItem(holding))

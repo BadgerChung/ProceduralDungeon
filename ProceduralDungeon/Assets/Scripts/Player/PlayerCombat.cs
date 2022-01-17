@@ -12,22 +12,8 @@ public class PlayerCombat : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && !InventoryVisualizer.instance.isInventoryOpen)
-        {
-            Item item = InventoryVisualizer.instance.selectedItem;
-            if (item is Wand)
-            {
-                Wand wand = (Wand)item;
-                if (projectileCooldown <= 0)
-                {
-                    Shoot(wand);
-                    projectileCooldown = 1 / wand.projectilesPerSecond;
-                }
-            }
-        }
         if(Input.GetMouseButton(0) && !InventoryVisualizer.instance.isInventoryOpen)
         {
             Item item = InventoryVisualizer.instance.selectedItem;
@@ -44,7 +30,7 @@ public class PlayerCombat : MonoBehaviour
         projectileCooldown -= Time.deltaTime;
     }
 
-    void Shoot(Wand wand)
+    void Shoot(Wand wand) // støelba
     {
         Vector3 worldCursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = worldCursorPosition - transform.position;
