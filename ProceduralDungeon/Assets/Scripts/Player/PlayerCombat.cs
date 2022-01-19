@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : Living
 {
 
     float projectileCooldown = 0f;
 
-    void Start()
+    public override void Die()
     {
-        
+        Debug.Log("umøels");
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     void Update()
@@ -40,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
         direction += new Vector2(Random.Range(-wand.spread, wand.spread), Random.Range(-wand.spread, wand.spread));
         direction.Normalize();
         rb.velocity = direction * wand.projectileSpeed;
-        Destroy(projectile, 3f);
+        ignoreList.Add(projectile);
+        //Destroy(projectile, 3f);
     }
 }

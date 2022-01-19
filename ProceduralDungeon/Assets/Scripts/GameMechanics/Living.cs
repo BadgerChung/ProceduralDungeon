@@ -7,21 +7,40 @@ public class Living : MonoBehaviour
 
     public int hp;
 
+    protected List<GameObject> ignoreList;
+
+    protected virtual void Start()
+    {
+        ignoreList = new List<GameObject>();
+    }
+
     public virtual void Damage(int damage)
     {
-        /*udìláme jindy kryndy pindy*/ /**//**//**//**/
-        /*bužio*///ružio
+        hp -= damage;
+        if(hp < 1)
+        {
+            Die();
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public virtual void Die()
     {
-        
+        Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        Projectile projectile = collision.GetComponent<Projectile>();
+        if(projectile != null)
+        {
+            if (ignoreList.Contains(collision.gameObject)) return;
+            Damage(projectile.damage);
+            if (!projectile.penetration) Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        ignoreList.Remove(collision.gameObject);
     }
 }
