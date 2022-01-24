@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.instance == null) Debug.LogError("tak seš kokot");
+        GameManager.instance.player = gameObject;
         rb = GetComponent<Rigidbody2D>();
     }
 

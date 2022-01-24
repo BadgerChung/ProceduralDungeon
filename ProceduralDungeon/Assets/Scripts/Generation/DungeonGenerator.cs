@@ -36,6 +36,8 @@ public class DungeonGenerator : MonoBehaviour
 
     public HashSet<Vector2Int> corridorsPositions;
 
+    public HashSet<Vector2Int> wallPositions;
+
     [SerializeField]
     public Item item;
 
@@ -82,7 +84,7 @@ public class DungeonGenerator : MonoBehaviour
 
         floorPositions.UnionWith(roomPositions);
 
-        HashSet<Vector2Int> wallPositions = WallFinder.FindWallPositions(floorPositions, Direction2D.directionsList);
+        wallPositions = WallFinder.FindWallPositions(floorPositions, Direction2D.directionsList);
 
         tilemapVisualizer.Clear();
         tilemapVisualizer.GenerateFloorTiles(floorPositions); // vykreslí pozice podlahových tilù z floorPositions
