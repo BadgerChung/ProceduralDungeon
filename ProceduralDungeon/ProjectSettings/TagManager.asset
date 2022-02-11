@@ -14,8 +14,8 @@ TagManager:
   - Walls
   - Interactable
   - Projectile
-  - 
-  - 
+  - Enemy
+  - ProjectileCollider
   - 
   - 
   - 

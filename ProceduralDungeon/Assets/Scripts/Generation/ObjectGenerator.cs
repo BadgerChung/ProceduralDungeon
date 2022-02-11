@@ -79,4 +79,27 @@ public static class ObjectGenerator
 
         return chestPositions;
     }
+
+    public static HashSet<Vector2Int> GenerateEnemyPositions()
+    {
+        if (!initialized) throw new InvalidOperationException("OBJECT GENERATOR NENÍ INICIALIZOVÁN");
+
+        HashSet<Vector2Int> enemyPositions = new HashSet<Vector2Int>();
+
+        foreach (List<Vector2Int> validPositions in validObjectPositions)
+        {
+            int enemyCount = Random.Range(0, 5);
+
+            for (int i = 0; i < enemyCount; i++)
+            {
+                Vector2Int validPos = validPositions[Random.Range(0, validPositions.Count)];
+                enemyPositions.Add(validPos);
+                RemoveAllNeighbours(validPos, validPositions);
+            }
+            
+            
+        }
+
+        return enemyPositions;
+    }
 }

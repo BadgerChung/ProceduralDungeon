@@ -7,7 +7,7 @@ public class StraightMovement : Movement
 
     private float stopDistance;
 
-    public StraightMovement(Transform transform, float stopDistance) : base(transform)
+    public StraightMovement(Transform transform, Rigidbody2D rigidBody, float stopDistance) : base(transform, rigidBody)
     {
         this.stopDistance = stopDistance;
     }
@@ -18,7 +18,8 @@ public class StraightMovement : Movement
         if(Vector2.Distance(position, moveTo) >= stopDistance)
         {
             Vector2 direction = (moveTo - position).normalized;
-            transform.position += (Vector3)direction * Time.deltaTime * speed;
+            rigidBody.velocity = direction * speed;
+            //transform.position += (Vector3)direction * Time.deltaTime * speed;
         }
     }
 

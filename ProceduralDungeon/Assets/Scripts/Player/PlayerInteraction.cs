@@ -48,10 +48,14 @@ public class PlayerInteraction : MonoBehaviour
         Interactable closest = null;
         foreach (Interactable interactable in interactables)
         {
-            if (Vector3.Distance(interactable.transform.position, player.transform.position) < minDistance)
+            try
             {
-                closest = interactable;
+                if (Vector3.Distance(interactable.transform.position, player.transform.position) < minDistance)
+                {
+                    closest = interactable;
+                }
             }
+            catch { }
         }
         return closest;
     }
