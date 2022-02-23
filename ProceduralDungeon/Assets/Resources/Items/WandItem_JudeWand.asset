@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d919471cd72938418e0c52d0fe6bb35, type: 3}
   m_Name: WandItem_JudeWand
   m_EditorClassIdentifier: 
-  displayName: Jude Wand
+  displayName: Gas Wand
   systemName: judewand
-  lore: Used by Adolf Von Gastown.
-  damage: 90
+  lore: Used by Scrotus Von Gastown.
   projectile: {fileID: 318792785543021037, guid: bed572f0415cfb844b4cbb7873e890eb, type: 3}
   projectileSpeed: 3
   projectilesPerSecond: 150

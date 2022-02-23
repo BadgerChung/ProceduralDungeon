@@ -28,7 +28,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField]
     public int startRoomRectHeight, startRoomRectWidth;
 
-    public int seed = 6;
+    public int seed = 0;
 
     public static DungeonGenerator instance { get; private set; }
 
@@ -44,6 +44,7 @@ public class DungeonGenerator : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        seed = Random.Range(0, 600);
     }
 
     private void Start()
