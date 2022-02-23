@@ -15439,7 +15439,7 @@ MonoBehaviour:
   roomPercent: 0.6
   startRoomRectHeight: 7
   startRoomRectWidth: 7
-  seed: 1945
+  seed: 0
   item: {fileID: 11400000, guid: 50f3ee3b892f6a4459a014fe4bae4de3, type: 2}
 --- !u!4 &1450793603
 Transform:
