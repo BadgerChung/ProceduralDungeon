@@ -20,10 +20,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float dashLength = 10f;
     private Vector2 dashPosition;
+    private float dashCooldown;
 
     private void Start()
     {
-        if (GameManager.instance == null) Debug.LogError("tak seš kokot");
         GameManager.instance.player = gameObject;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -63,8 +63,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Dash()
     {
-        if (dash)
+        dashCooldown -= Time.deltaTime;
+        if (dash && dashCooldown < 0)
         {
+            dashCooldown = 1f;
             dashPosition = (Vector2)transform.position + direction * dashLength;
 
             raycast = Physics2D.Raycast(transform.position, direction, dashLength, dashLayerMask);
@@ -72,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
                 dashPosition = raycast.point;
 
             rb.MovePosition(dashPosition);
-            dash = false;
         }
+        dash = false;
     }
 }

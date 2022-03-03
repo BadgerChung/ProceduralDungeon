@@ -38,9 +38,6 @@ public class DungeonGenerator : MonoBehaviour
 
     public HashSet<Vector2Int> wallPositions;
 
-    [SerializeField]
-    public Item item;
-
     private void Awake()
     {
         instance = this;
@@ -102,11 +99,18 @@ public class DungeonGenerator : MonoBehaviour
             GameObject chest = Instantiate(chestPrefab, (Vector2)position, Quaternion.identity);
             ChestInteractable cInteractable = chest.GetComponentInChildren<ChestInteractable>();
             cInteractable.inventory = new Inventory(10);
-            cInteractable.inventory.TryAddItem(item);
+            foreach(ItemProbability itemProbability in InventoryVisualizer.instance.lootTable)
+            {
+                float rand = Random.Range(0f, 1f);
+                if(rand < itemProbability.probability)
+                {
+                    cInteractable.inventory.TryAddItem(itemProbability.item);
+                }
+            }
         }
         foreach (Vector2Int position in enemyPositions)
         {
-            GameObject chest = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], (Vector2)position, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], (Vector2)position, Quaternion.identity);
         }
     }
 

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c19cafea98c56c4f9834e64b558ecff, type: 3}
-  m_Name: Item_Item
+  m_Script: {fileID: 11500000, guid: 4f8f87114976f624ea04fe27387fd6e3, type: 3}
+  m_Name: ConsumableItem_HealthPotion
   m_EditorClassIdentifier: 
-  displayName: Potion
-  systemName: vodka
-  lore: Replenishes 10 HP
+  displayName: Health Potion
+  systemName: hppot
+  lore: Replenishes 20 HP.
+  hpReplenish: 20

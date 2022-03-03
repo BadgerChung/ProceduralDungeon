@@ -15,6 +15,9 @@ public class InventoryVisualizer : MonoBehaviour
     private Item[] startItems; // Startovní itemy
 
     [SerializeField]
+    public List<ItemProbability> lootTable;
+
+    [SerializeField]
     private Color selectedSlotColor, defaultSlotColor;
 
     [SerializeField]
@@ -29,8 +32,8 @@ public class InventoryVisualizer : MonoBehaviour
     [SerializeField]
     private SpriteRenderer handImage;
 
-    private Inventory playerInventory;
-    private int selectedSlot;
+    public Inventory playerInventory;
+    public int selectedSlot;
     public bool isInventoryOpen { get; private set; }
 
     public Item selectedItem

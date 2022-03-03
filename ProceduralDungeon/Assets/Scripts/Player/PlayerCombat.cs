@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCombat : Living
 {
 
+    [SerializeField]
+    private Slider healthBar;
+
+    float maxhp;
     float projectileCooldown = 0f;
 
     public override void Die()
@@ -12,13 +17,21 @@ public class PlayerCombat : Living
         Debug.Log("umøels");
     }
 
+    public override void Damage(int damage)
+    {
+        base.Damage(damage);
+        healthBar.value = hp / maxhp;
+    }
+
     protected override void Start()
     {
         base.Start();
+        maxhp = hp;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if(Input.GetMouseButton(0) && !InventoryVisualizer.instance.isInventoryOpen)
         {
             Item item = InventoryVisualizer.instance.selectedItem;
@@ -30,6 +43,16 @@ public class PlayerCombat : Living
                     Shoot(wand);
                     projectileCooldown = 1 / wand.projectilesPerSecond;
                 }
+            }
+            else if (item is Consumable)
+            {
+                Consumable consumable = (Consumable)item;
+                
+                hp += consumable.hpReplenish;
+                if (hp > maxhp) hp = (int)maxhp;
+                healthBar.value = hp / maxhp;
+
+                InventoryVisualizer.instance.playerInventory.SwitchSlot(InventoryVisualizer.instance.selectedSlot, null);
             }
         }
         projectileCooldown -= Time.deltaTime;

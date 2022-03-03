@@ -9,9 +9,21 @@ public class Living : MonoBehaviour
 
     protected List<GameObject> ignoreList;
 
+    protected SpriteRenderer sprite;
+
+    protected float redness;
+
     protected virtual void Start()
     {
         ignoreList = new List<GameObject>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    protected virtual void Update()
+    {
+        redness -= Time.deltaTime * 2f;
+        redness = Mathf.Clamp01(redness);
+        sprite.color = new Color(1, 1 - redness, 1 - redness, 1);
     }
 
     public virtual void Damage(int damage)
@@ -21,6 +33,7 @@ public class Living : MonoBehaviour
         {
             Die();
         }
+        redness = 1;
     }
 
     public virtual void Die()
