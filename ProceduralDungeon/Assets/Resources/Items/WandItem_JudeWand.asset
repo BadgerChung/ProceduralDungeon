@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Gas Wand
   systemName: judewand
-  lore: Used by Scrotus Von Gastown.
+  lore: 'Damage: 1
+
+    Fire rate: 150
+
+
+    Used by Scrotus Von Gastown.'
   projectile: {fileID: 318792785543021037, guid: bed572f0415cfb844b4cbb7873e890eb, type: 3}
   projectileSpeed: 3
   projectilesPerSecond: 150

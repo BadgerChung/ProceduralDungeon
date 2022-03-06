@@ -9,16 +9,28 @@ public class PlayerCombat : Living
     [SerializeField]
     private Slider healthBar;
 
+    [SerializeField]
+    private GameObject deathScreen;
+
     float maxhp;
     float projectileCooldown = 0f;
 
+    public bool shield;
+
     public override void Die()
     {
-        Debug.Log("umøels");
+
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        GetComponent<SpriteRenderer>().enabled = false;
+        enabled = false;
+        GetComponent<PlayerMovement>().enabled = false;
+
+        deathScreen.SetActive(true);
     }
 
     public override void Damage(int damage)
     {
+        if (shield) return;
         base.Damage(damage);
         healthBar.value = hp / maxhp;
     }

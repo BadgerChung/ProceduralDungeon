@@ -51,6 +51,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public void RunProceduralGeneration()
     {
+
         Random.InitState(seed);
 
         instance = this;

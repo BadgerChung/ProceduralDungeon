@@ -36,10 +36,4 @@ public class ChestInteractable : Interactable
             InventoryVisualizer.instance.OpenInventory(inventory);
         }
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //inventory = new Inventory(10);
-    }
 }

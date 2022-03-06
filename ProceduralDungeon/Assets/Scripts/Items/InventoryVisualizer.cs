@@ -24,6 +24,9 @@ public class InventoryVisualizer : MonoBehaviour
     private GameObject slotPrefab;
 
     [SerializeField]
+    private GameObject accessorySlotPrefab;
+
+    [SerializeField]
     private GameObject playerSlotsParent, openSlotsParent;
 
     [SerializeField]
@@ -78,8 +81,18 @@ public class InventoryVisualizer : MonoBehaviour
         // Vytvoøí všechny sloty hráèova inventáøe
         for (int i = 0; i < playerSlots; i++)
         {
-            GameObject slotObj = Instantiate(slotPrefab, playerSlotsParent.transform);
+            GameObject slotObj;
+            if (i == playerSlots - 1)
+            {
+                slotObj = Instantiate(accessorySlotPrefab, playerSlotsParent.transform);
+            }
+            else
+            {
+                slotObj = Instantiate(slotPrefab, playerSlotsParent.transform);
+            }
+            
             Slot slot = slotObj.GetComponent<Slot>();
+            
             slot.itemImage.enabled = false;
             playerInvSlots.Add(slot);
         }
@@ -213,8 +226,8 @@ public class InventoryVisualizer : MonoBehaviour
         if(Input.mouseScrollDelta.y != 0)
         {
             selectedSlot -= (int)Input.mouseScrollDelta.y;
-            if (selectedSlot >= playerInventory.slots.Length) selectedSlot = 0;
-            if (selectedSlot < 0) selectedSlot = playerInventory.slots.Length - 1;
+            if (selectedSlot >= playerInventory.slots.Length - 1) selectedSlot = 0;
+            if (selectedSlot < 0) selectedSlot = playerInventory.slots.Length - 2;
             PlayerInventoryChanged(playerInventory);
         }
 
@@ -253,11 +266,11 @@ public class InventoryVisualizer : MonoBehaviour
             selectedSlot = 6;
             PlayerInventoryChanged(playerInventory);
         }
-        if (Input.GetKey(KeyCode.Alpha8))
+        /*if (Input.GetKey(KeyCode.Alpha8))
         {
             selectedSlot = 7;
             PlayerInventoryChanged(playerInventory);
-        }
+        }*/
     }
 
     private void ShiftClick() // automaticky pøesune item na který kliknu do druhého inventáøe
@@ -278,6 +291,14 @@ public class InventoryVisualizer : MonoBehaviour
             {
                 openInventory.SwitchSlot(openInvSlots.IndexOf(hoveringOver), i); // pokud nelze pøidat item do druhého inventáøe, vrátí ho zpìt na své místo
             }
+            else
+            {
+                if(!(playerInventory.slots[7] is Accessory) && !(playerInventory.slots[7] == null))
+                {
+                    playerInventory.SwitchSlot(7, null);
+                    openInventory.SwitchSlot(openInvSlots.IndexOf(hoveringOver), i);
+                }
+            }
         }
     }
 
@@ -285,7 +306,16 @@ public class InventoryVisualizer : MonoBehaviour
     {
         if (playerInvSlots.Contains(hoveringOver))
         {
-            holding = playerInventory.SwitchSlot(playerInvSlots.IndexOf(hoveringOver), holding);
+            int selectedIndex = playerInvSlots.IndexOf(hoveringOver);
+            if (selectedIndex == 7)
+            {
+                if(holding is Accessory || holding == null) holding = playerInventory.SwitchSlot(selectedIndex, holding);
+            }
+            else
+            {
+                holding = playerInventory.SwitchSlot(selectedIndex, holding);
+            }
+            
         }
         else
         {

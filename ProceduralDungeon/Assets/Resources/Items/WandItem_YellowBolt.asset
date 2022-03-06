@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d919471cd72938418e0c52d0fe6bb35, type: 3}
-  m_Name: WandItem_Wand
+  m_Name: WandItem_YellowBolt
   m_EditorClassIdentifier: 
-  displayName: Yellow Bolter
-  systemName: default_wand
+  displayName: Yellow Bolt
+  systemName: yellow_bolt_wand
   lore: 'Damage: 10
 
-    Fire rate: 10
+    Fire rate: 3
 
 
-    Damages your ego.'
+    You found this illuminating stick on
+    the ground.'
   projectile: {fileID: 318792785543021037, guid: aead3194507f265459dc5a234b84f494, type: 3}
-  projectileSpeed: 15
-  projectilesPerSecond: 10
-  spread: 0
+  projectileSpeed: 12
+  projectilesPerSecond: 3
+  spread: 0.02

@@ -35,7 +35,7 @@ public class PathMovement : Movement
             // pathfinding
             Vector2Int startNode = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
 
-            Debug.Log(string.Format("Generating path... Start=({0},{1}) End=({2},{3})", startNode.x, startNode.y, find.x, find.y));
+            //Debug.Log(string.Format("Generating path... Start=({0},{1}) End=({2},{3})", startNode.x, startNode.y, find.x, find.y));
 
             Dictionary<Vector2Int, Node> nodes = new Dictionary<Vector2Int, Node>();
 
@@ -48,13 +48,13 @@ public class PathMovement : Movement
                 Vector2Int lowest = LowestCostNode(nodes);
                 if(!nodes.ContainsKey(lowest))
                 {
-                    Debug.Log("No more nodes available");
+                    //Debug.Log("No more nodes available");
                     int c = 0;
                     foreach (KeyValuePair<Vector2Int, Node> kv in nodes)
                     {
                         if (!kv.Value.closed) c++;
                     }
-                    Debug.Log(c + " open nodes remaining");
+                    //Debug.Log(c + " open nodes remaining");
                 }
                 else SearchNode(nodes[lowest], ref nodes);
 
@@ -67,7 +67,7 @@ public class PathMovement : Movement
                 }
             }
 
-            Debug.Log("Generated path long=" + path.Count);
+            //Debug.Log("Generated path long=" + path.Count);
 
             if(path.Count > 0)
             {
@@ -94,8 +94,8 @@ public class PathMovement : Movement
             else
             {
                 nextWaypoint = waypointChain[waypointChainIndex] + new Vector2(0.5f, 0.5f);
-                Debug.Log(nextWaypoint.x + ", " + nextWaypoint.y);
-                Debug.Log(waypointChainIndex + " / " + waypointChain.Count);
+                //Debug.Log(nextWaypoint.x + ", " + nextWaypoint.y);
+                //Debug.Log(waypointChainIndex + " / " + waypointChain.Count);
             }
         }
         if (Vector2.Distance(position, moveTo) >= stopDistance && !stop)

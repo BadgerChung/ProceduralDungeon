@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    [SerializeField]
+    private PlayerCombat playerCombat;
+
+    [SerializeField]
+    private Slider abilityBar;
+
     [SerializeField]
     private float moveSpeed = 5f;
     private Vector2 direction;
@@ -11,16 +19,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rb;
 
-    RaycastHit2D raycast;
-
     [SerializeField]
-    private LayerMask dashLayerMask;
+    private GameObject shield;
 
-    private bool dash;
-    [SerializeField]
-    private float dashLength = 10f;
-    private Vector2 dashPosition;
-    private float dashCooldown;
+    private bool ability;
+    private float abilityCooldown;
+    private float maxAbilityCooldown = 5f;
+    private float abilityDuration;
+    private string abilityType;
 
     private void Start()
     {
@@ -36,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-        Dash();
+        Ability();
     }
 
     private void GetInputs()
@@ -53,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = new Vector3(cursorX, 1, 1);
 
         if (Input.GetKeyDown(KeyCode.Space))
-            dash = true;
+            ability = true;
     }
 
     private void Move()
@@ -61,20 +67,38 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = direction * moveSpeed;
     }
 
-    private void Dash()
+    private void Ability()
     {
-        dashCooldown -= Time.deltaTime;
-        if (dash && dashCooldown < 0)
+        abilityCooldown -= Time.deltaTime;
+        abilityDuration -= Time.deltaTime;
+
+        abilityBar.value = (maxAbilityCooldown - abilityCooldown) / maxAbilityCooldown;
+
+        if (ability && abilityCooldown < 0)
         {
-            dashCooldown = 1f;
-            dashPosition = (Vector2)transform.position + direction * dashLength;
-
-            raycast = Physics2D.Raycast(transform.position, direction, dashLength, dashLayerMask);
-            if (raycast.collider != null)
-                dashPosition = raycast.point;
-
-            rb.MovePosition(dashPosition);
+            if(InventoryVisualizer.instance.playerInventory.slots[7] is Accessory)
+            {
+                Accessory accessory = (Accessory) InventoryVisualizer.instance.playerInventory.slots[7];
+                abilityCooldown = accessory.cooldown;
+                maxAbilityCooldown = accessory.cooldown;
+                if(accessory.accessoryType == "shield")
+                {
+                    abilityDuration = 2f;
+                    abilityType = "shield";
+                    playerCombat.shield = true;
+                    shield.SetActive(true);
+                }
+            }
         }
-        dash = false;
+        if(abilityDuration < 0)
+        {
+            if(abilityType == "shield")
+            {
+                playerCombat.shield = false;
+                shield.SetActive(false);
+                abilityType = "";
+            }
+        }
+        ability = false;
     }
 }

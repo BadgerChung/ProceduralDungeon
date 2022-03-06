@@ -13,10 +13,13 @@ public class Living : MonoBehaviour
 
     protected float redness;
 
+    protected GameObject deathEffect;
+
     protected virtual void Start()
     {
         ignoreList = new List<GameObject>();
         sprite = GetComponent<SpriteRenderer>();
+        deathEffect = Resources.Load<GameObject>("Prefabs/DeathEffect");
     }
 
     protected virtual void Update()
@@ -38,6 +41,7 @@ public class Living : MonoBehaviour
 
     public virtual void Die()
     {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
