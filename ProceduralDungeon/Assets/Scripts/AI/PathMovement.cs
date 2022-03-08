@@ -12,9 +12,9 @@ public class PathMovement : Movement
     private int waypointChainIndex;
     private List<Vector2Int> waypointChain;
 
-    private float stopDistance;
+    public float stopDistance;
 
-    public int maxIterations;
+    private int maxIterations = 20;
 
     public PathMovement(Transform transform, Rigidbody2D rigidBody, float stopDistance) : base(transform, rigidBody)
     {
@@ -25,12 +25,11 @@ public class PathMovement : Movement
 
     public override void Move(Vector2 moveTo, float speed)
     {
-
         Vector2Int find = new Vector2Int(Mathf.FloorToInt(moveTo.x), Mathf.FloorToInt(moveTo.y));
 
-        if(nextWaypoint == null || lastPosition != find)
+        if (nextWaypoint == null || lastPosition != find)
         {
-            
+
             lastPosition = find;
             // pathfinding
             Vector2Int startNode = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
@@ -60,7 +59,6 @@ public class PathMovement : Movement
 
                 if(nodes.ContainsKey(find))
                 {
-                    Debug.Log("Found target!");
                     maxIterations = 100;
                     WaypointChain(nodes[find], ref path);
                     break;

@@ -10,7 +10,15 @@ public class Enemy : Living
 
     public Combat combat;
 
+    public bool ranged;
+
     public float speed;
+    public float stopDistance;
+    public int damage;
+    public float range;
+    public float cooldown;
+    public GameObject projectile;
+    public float projectileSpeed;
 
     private float speedMultiplier = 1;
 
@@ -25,8 +33,17 @@ public class Enemy : Living
 
         rigidBody = GetComponent<Rigidbody2D>();
 
-        movement = new PathMovement(transform, rigidBody, 0.7f);
-        combat = new MeleeCombat(transform, 10, 1.5f, 0.5f);
+        movement = new PathMovement(transform, rigidBody, stopDistance);
+
+        if(ranged)
+        {
+            combat = new RangedCombat(transform, damage, range, cooldown, projectile, projectileSpeed);
+        }
+        else
+        {
+            combat = new MeleeCombat(transform, damage, range, cooldown);
+        }
+        
         combat.Target(GameManager.instance.player.GetComponent<Living>());
     }
 

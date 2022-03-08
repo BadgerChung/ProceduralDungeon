@@ -21,6 +21,6 @@ MonoBehaviour:
 
     Used by Scrotus Von Gastown.'
   projectile: {fileID: 318792785543021037, guid: bed572f0415cfb844b4cbb7873e890eb, type: 3}
-  projectileSpeed: 3
+  projectileSpeed: 5
   projectilesPerSecond: 150
-  spread: 0.6
+  spread: 0.4

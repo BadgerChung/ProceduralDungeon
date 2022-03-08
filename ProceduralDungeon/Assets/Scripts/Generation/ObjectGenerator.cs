@@ -68,9 +68,6 @@ public static class ObjectGenerator
 
         foreach (List<Vector2Int> validPositions in validObjectPositions)
         {
-            //if(kokot > nìjakej random kokot) tak nic nedìlej;
-
-            //foreach (Vector2Int position in validPositions) chestPositions.Add(position);
 
             Vector2Int validPos = validPositions[Random.Range(0, validPositions.Count)];
             chestPositions.Add(validPos);
@@ -101,5 +98,13 @@ public static class ObjectGenerator
         }
 
         return enemyPositions;
+    }
+
+    public static Vector2Int GetPortalPosition()
+    {
+        List<Vector2Int> room = validObjectPositions[Random.Range(1, validObjectPositions.Count)];
+        Vector2Int pos = room[Random.Range(0, room.Count)];
+        RemoveAllNeighbours(pos, room);
+        return pos;
     }
 }

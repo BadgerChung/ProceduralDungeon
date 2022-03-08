@@ -8,7 +8,7 @@ public abstract class Movement
     protected Transform transform;
     protected Rigidbody2D rigidBody;
 
-    protected Movement(Transform transform, Rigidbody2D rigidBody)
+    public Movement(Transform transform, Rigidbody2D rigidBody)
     {
         this.transform = transform;
         this.rigidBody = rigidBody;

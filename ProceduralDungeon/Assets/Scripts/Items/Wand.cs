@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "WandItem_", menuName = "Wand")]
+[CreateAssetMenu(fileName = "WandItem_", menuName = "Items/Wand")]
 public class Wand : Item
 {
     public GameObject projectile;

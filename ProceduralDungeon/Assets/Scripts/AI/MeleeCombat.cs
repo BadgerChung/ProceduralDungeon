@@ -5,11 +5,11 @@ using UnityEngine;
 public class MeleeCombat : Combat
 {
 
-    private int damage;
+    public int damage;
 
-    private float range;
+    public float range;
 
-    private float cooldown;
+    public float cooldown;
     private float currentCooldown;
 
     public MeleeCombat(Transform transform, int damage, float range, float cooldown) : base(transform)
@@ -28,6 +28,7 @@ public class MeleeCombat : Combat
             if(dist < range)
             {
                 Attack();
+                currentCooldown = cooldown;
                 return false;
             }
             return true;

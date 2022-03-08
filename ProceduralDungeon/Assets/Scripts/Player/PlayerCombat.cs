@@ -14,17 +14,22 @@ public class PlayerCombat : Living
 
     float maxhp;
     float projectileCooldown = 0f;
+    bool dead;
 
     public bool shield;
 
     public override void Die()
     {
+        if (dead) return;
 
         Instantiate(deathEffect, transform.position, Quaternion.identity);
         GetComponent<SpriteRenderer>().enabled = false;
-        enabled = false;
         GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = false;
 
+        dead = true;
+        CurrentRun.currentRun = false;
         deathScreen.SetActive(true);
     }
 
@@ -39,6 +44,11 @@ public class PlayerCombat : Living
     {
         base.Start();
         maxhp = hp;
+        if(CurrentRun.currentRun)
+        {
+            hp = CurrentRun.playerHp;
+            healthBar.value = hp / maxhp;
+        }
     }
 
     protected override void Update()
@@ -66,6 +76,19 @@ public class PlayerCombat : Living
 
                 InventoryVisualizer.instance.playerInventory.SwitchSlot(InventoryVisualizer.instance.selectedSlot, null);
             }
+            else if (item is Throwable)
+            {
+                Throwable throwable = (Throwable)item;
+
+                GameObject g = Instantiate(throwable.prefab, transform.position, Quaternion.identity);
+                Rigidbody2D rb = g.GetComponent<Rigidbody2D>();
+                Vector3 worldCursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 direction = worldCursorPosition - transform.position;
+                direction.Normalize();
+                rb.velocity = direction * 10f;
+
+                InventoryVisualizer.instance.playerInventory.SwitchSlot(InventoryVisualizer.instance.selectedSlot, null);
+            }
         }
         projectileCooldown -= Time.deltaTime;
     }
@@ -82,5 +105,10 @@ public class PlayerCombat : Living
         rb.velocity = direction * wand.projectileSpeed;
         ignoreList.Add(projectile);
         //Destroy(projectile, 3f);
+    }
+
+    private void OnDestroy()
+    {
+        CurrentRun.playerHp = hp;
     }
 }

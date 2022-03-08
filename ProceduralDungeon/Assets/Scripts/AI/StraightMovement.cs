@@ -5,7 +5,7 @@ using UnityEngine;
 public class StraightMovement : Movement
 {
 
-    private float stopDistance;
+    public float stopDistance;
 
     public StraightMovement(Transform transform, Rigidbody2D rigidBody, float stopDistance) : base(transform, rigidBody)
     {

@@ -90,11 +90,16 @@ public class DungeonGenerator : MonoBehaviour
         tilemapVisualizer.GenerateWallTiles(wallPositions); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
 
         ObjectGenerator.InitObjectGenerator(roomsPositions);
+        Vector2Int portalPosition = ObjectGenerator.GetPortalPosition();
         HashSet<Vector2Int> chestPositions = ObjectGenerator.GenerateChestPositions();
         HashSet<Vector2Int> enemyPositions = ObjectGenerator.GenerateEnemyPositions();
         wallPositions.UnionWith(chestPositions);
         GameObject chestPrefab = Resources.Load<GameObject>("Prefabs/chest");
         GameObject[] enemyPrefabs = Resources.LoadAll<GameObject>("Prefabs/Enemies");
+        GameObject portalPrefab = Resources.Load<GameObject>("Prefabs/Portal");
+
+        Instantiate(portalPrefab, (Vector2)portalPosition, Quaternion.identity);
+
         foreach(Vector2Int position in chestPositions)
         {
             GameObject chest = Instantiate(chestPrefab, (Vector2)position, Quaternion.identity);

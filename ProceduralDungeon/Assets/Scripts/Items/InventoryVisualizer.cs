@@ -120,12 +120,22 @@ public class InventoryVisualizer : MonoBehaviour
         }
 
         // Setup hráèova inventáøe (objektu)
-        playerInventory = new Inventory(playerSlots);
+        if(CurrentRun.currentRun)
+        {
+            playerInventory = CurrentRun.inventory;
+        }
+        else
+        {
+            playerInventory = new Inventory(playerSlots);
+        }
+
         playerInventory.inventoryChanged += PlayerInventoryChanged;
         selectedSlot = 0;
 
         // Pøidání startovních itemù do hráèova inventáøe
-        foreach (Item item in startItems) playerInventory.TryAddItem(item);
+        if(!CurrentRun.currentRun) foreach (Item item in startItems) playerInventory.TryAddItem(item);
+
+        PlayerInventoryChanged(playerInventory);
     }
 
     private void PlayerInventoryChanged(Inventory inv)
@@ -352,7 +362,7 @@ public class InventoryVisualizer : MonoBehaviour
         }
         else
         {
-            return loadedHandSprites["default_hand"];
+            return null;
         }
     }
 
@@ -397,5 +407,11 @@ public class InventoryVisualizer : MonoBehaviour
         openInventory = null;
         openSlotsParent.SetActive(false);
     }
-    
+
+
+    private void OnDestroy()
+    {
+        CurrentRun.inventory = playerInventory;
+        playerInventory.inventoryChanged -= PlayerInventoryChanged;
+    }
 }
