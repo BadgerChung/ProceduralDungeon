@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Gas Grenade
   systemName: gas_grenade
-  lore: These fucking jews don't stand a chance.
+  lore: An addition from modern times.
   prefab: {fileID: 1284936727007356235, guid: 4019e4f7b28a8e94097e26f4c431e954, type: 3}
