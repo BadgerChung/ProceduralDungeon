@@ -16,7 +16,7 @@ public class RangedCombat : Combat
 
     private float currentCooldown;
 
-    public RangedCombat(Transform transform, int damage, float range, float cooldown, GameObject projectile, float projectileSpeed) : base(transform)
+    public RangedCombat(Transform transform, int damage, float range, float cooldown, GameObject projectile, float projectileSpeed) : base(transform) // konstruktor pro boj na dálku
     {
         this.damage = damage;
         this.range = range;
@@ -31,7 +31,7 @@ public class RangedCombat : Combat
         if (target != null && currentCooldown < 0)
         {
             float dist = Vector3.Distance(transform.position, target.transform.position);
-            if (dist < range)
+            if (dist < range) // pokud je cíl v dosahu, spustí se útok
             {
                 Attack();
                 currentCooldown = cooldown;
@@ -42,7 +42,7 @@ public class RangedCombat : Combat
         return false;
     }
 
-    private void Attack()
+    private void Attack() // útok
     {
         Vector3 targetPosition = target.transform.position;
         Vector2 direction = targetPosition - transform.position;

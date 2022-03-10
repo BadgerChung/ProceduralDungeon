@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class CurrentRun
 {
+    // ukládání hodnot do promìnných pro naètení v další úrovni
 
     public static bool currentRun = false;
 

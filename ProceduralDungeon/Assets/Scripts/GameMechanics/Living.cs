@@ -19,7 +19,7 @@ public class Living : MonoBehaviour
     {
         ignoreList = new List<GameObject>();
         sprite = GetComponent<SpriteRenderer>();
-        deathEffect = Resources.Load<GameObject>("Prefabs/DeathEffect");
+        deathEffect = Resources.Load<GameObject>("Prefabs/DeathEffect"); // naètení grafiky
     }
 
     protected virtual void Update()
@@ -36,10 +36,10 @@ public class Living : MonoBehaviour
         {
             Die();
         }
-        redness = 1;
+        redness = 1; // postava zèervená pøi poškození
     }
 
-    public virtual void Die()
+    public virtual void Die() // smrt
     {
         Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);

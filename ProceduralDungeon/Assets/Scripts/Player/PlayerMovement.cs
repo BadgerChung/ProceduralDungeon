@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
         Ability();
     }
 
-    private void GetInputs()
+    private void GetInputs() // ovládání
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -62,12 +62,12 @@ public class PlayerMovement : MonoBehaviour
             ability = true;
     }
 
-    private void Move()
+    private void Move() // pohyb
     {
         rb.velocity = direction * moveSpeed;
     }
 
-    private void Ability()
+    private void Ability() // schpnost
     {
         abilityCooldown -= Time.deltaTime;
         abilityDuration -= Time.deltaTime;

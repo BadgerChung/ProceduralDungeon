@@ -18,7 +18,7 @@ public class PlayerCombat : Living
 
     public bool shield;
 
-    public override void Die()
+    public override void Die() // smrt
     {
         if (dead) return;
 
@@ -30,12 +30,12 @@ public class PlayerCombat : Living
 
         dead = true;
         CurrentRun.currentRun = false;
-        deathScreen.SetActive(true);
+        deathScreen.SetActive(true); // aktivace obrazovky po smrti
     }
 
-    public override void Damage(int damage)
+    public override void Damage(int damage) // zranìní
     {
-        if (shield) return;
+        if (shield) return; // pokud je aktivní štít, hráè není zranìn
         base.Damage(damage);
         healthBar.value = hp / maxhp;
     }
@@ -54,6 +54,7 @@ public class PlayerCombat : Living
     protected override void Update()
     {
         base.Update();
+        // nastavování pøedmìtù podle toho, jaký je vybraný
         if(Input.GetMouseButton(0) && !InventoryVisualizer.instance.isInventoryOpen)
         {
             Item item = InventoryVisualizer.instance.selectedItem;
@@ -104,7 +105,6 @@ public class PlayerCombat : Living
         direction.Normalize();
         rb.velocity = direction * wand.projectileSpeed;
         ignoreList.Add(projectile);
-        //Destroy(projectile, 3f);
     }
 
     private void OnDestroy()

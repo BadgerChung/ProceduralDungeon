@@ -14,5 +14,5 @@ public abstract class Movement
         this.rigidBody = rigidBody;
     }
 
-    public abstract void Move(Vector2 moveTo, float speed);
+    public abstract void Move(Vector2 moveTo, float speed); // pohyb
 }

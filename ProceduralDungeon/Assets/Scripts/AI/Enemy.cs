@@ -26,8 +26,7 @@ public class Enemy : Living
 
     private Rigidbody2D rigidBody;
 
-    // Start is called before the first frame update
-    protected override void Start()
+    protected override void Start() // nastavení pathfinding a typu boje
     {
         base.Start();
 
@@ -47,24 +46,23 @@ public class Enemy : Living
         combat.Target(GameManager.instance.player.GetComponent<Living>());
     }
 
-    public override void Damage(int damage)
+    public override void Damage(int damage) // síla útoku
     {
         base.Damage(damage);
         speedMultiplier = 0.5f;
         damageCooldown = 1f;
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         base.Update();
         damageCooldown -= Time.deltaTime;
-        if(damageCooldown < 0)
+        if(damageCooldown < 0) // zpomalí nepøítele pokud ho zraní hráè
         {
             speedMultiplier = 1;
         }
         rigidBody.velocity = Vector2.zero;
-        if(combat.Update())
+        if(combat.Update()) // pohyb nepøítele
         {
             movement.Move(GameManager.instance.player.transform.position, speed * speedMultiplier);
         }

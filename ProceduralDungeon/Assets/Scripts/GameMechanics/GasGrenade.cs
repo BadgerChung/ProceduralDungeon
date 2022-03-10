@@ -13,13 +13,11 @@ public class GasGrenade : MonoBehaviour
     private float gasCooldown;
     private Rigidbody2D rb;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         cooldown -= Time.deltaTime;
@@ -27,7 +25,7 @@ public class GasGrenade : MonoBehaviour
         ttl -= Time.deltaTime;
         if(cooldown < 0)
         {
-            rb.AddTorque(torque);
+            rb.AddTorque(torque); // toèení granátu
             if(gasCooldown < 0)
             {
                 Shoot(wand);
@@ -38,7 +36,7 @@ public class GasGrenade : MonoBehaviour
         if (ttl < 0) Destroy(gameObject);
     }
 
-    void Shoot(Wand wand)
+    void Shoot(Wand wand) // støelba
     {
         Vector2 direction = transform.up + transform.right;
         direction.Normalize();
@@ -46,7 +44,7 @@ public class GasGrenade : MonoBehaviour
         Shoot(wand, -direction);
     }
 
-    void Shoot(Wand wand, Vector2 direction)
+    void Shoot(Wand wand, Vector2 direction) // støelba projektilù
     {
         GameObject projectile = Instantiate(wand.projectile, transform.position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();

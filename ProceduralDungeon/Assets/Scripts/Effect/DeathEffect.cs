@@ -11,7 +11,7 @@ public class DeathEffect : MonoBehaviour
     private void Start()
     {
         ps = GetComponent<ParticleSystem>();
-        ps.Play();
+        ps.Play(); // pøehraje efekt smrti
     }
 
     private void Update()

@@ -49,7 +49,6 @@ public class InventoryVisualizer : MonoBehaviour
 
     private List<Slot> playerInvSlots;
 
-    // WIP
     public Inventory openInventory;
 
     private List<Slot> openInvSlots;
@@ -107,7 +106,7 @@ public class InventoryVisualizer : MonoBehaviour
         }
         openSlotsParent.SetActive(false);
 
-        // Naloadování spritù
+        // Naètení grafiky
         Sprite[] sprites = Resources.LoadAll<Sprite>("ItemSprites/");
         foreach(Sprite sprite in sprites)
         {
@@ -119,7 +118,7 @@ public class InventoryVisualizer : MonoBehaviour
             loadedHandSprites.Add(sprite.name, sprite);
         }
 
-        // Setup hráèova inventáøe (objektu)
+        // Nastavení hráèova inventáøe (objektu)
         if(CurrentRun.currentRun)
         {
             playerInventory = CurrentRun.inventory;
@@ -132,7 +131,7 @@ public class InventoryVisualizer : MonoBehaviour
         playerInventory.inventoryChanged += PlayerInventoryChanged;
         selectedSlot = 0;
 
-        // Pøidání startovních itemù do hráèova inventáøe
+        // Pøidání startovních pøedmìtù do hráèova inventáøe
         if(!CurrentRun.currentRun) foreach (Item item in startItems) playerInventory.TryAddItem(item);
 
         PlayerInventoryChanged(playerInventory);
@@ -150,7 +149,7 @@ public class InventoryVisualizer : MonoBehaviour
 
     private void InventoryChanged(List<Slot> invSlots, Inventory inv)
     {
-        // Projede všechny sloty a zobrazí itemy
+        // Prohledá všechny sloty a zobrazí pøedmìty
         for (int i = 0; i < inv.slots.Length; i++)
         {
             if(i == selectedSlot && inv == playerInventory)
@@ -177,7 +176,7 @@ public class InventoryVisualizer : MonoBehaviour
 
     public void Update()
     {
-        // otevøení/zavøení inv. pomocí tlaèítka
+        // otevøení/zavøení inventáøe pomocí tlaèítka
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             if (isInventoryOpen) CloseInventory();
@@ -224,11 +223,11 @@ public class InventoryVisualizer : MonoBehaviour
         {
             if(Input.GetKey(KeyCode.LeftShift))
             {
-                ShiftClick(); // automatické prohození itemu z jednoho inventáøe do druhého
+                ShiftClick(); // automatické prohození pøedmìtu z jednoho inventáøe do druhého
             }
             else
             {
-                SwitchHoldingItemWithSlot(); // manuální prohození itemu z jednoho inventáøe do druhého
+                SwitchHoldingItemWithSlot(); // manuální prohození Pøedmìtu z jednoho inventáøe do druhého
             }
         }
 
@@ -276,14 +275,9 @@ public class InventoryVisualizer : MonoBehaviour
             selectedSlot = 6;
             PlayerInventoryChanged(playerInventory);
         }
-        /*if (Input.GetKey(KeyCode.Alpha8))
-        {
-            selectedSlot = 7;
-            PlayerInventoryChanged(playerInventory);
-        }*/
     }
 
-    private void ShiftClick() // automaticky pøesune item na který kliknu do druhého inventáøe
+    private void ShiftClick() // automaticky pøesune pøedmìt na který kliknu do druhého inventáøe
     {
         if (openInventory == null) return;
         if (playerInvSlots.Contains(hoveringOver)) // pokud je to hráèùv inventáø
@@ -291,7 +285,7 @@ public class InventoryVisualizer : MonoBehaviour
             Item i = playerInventory.SwitchSlot(playerInvSlots.IndexOf(hoveringOver), null);
             if(!openInventory.TryAddItem(i))
             {
-                playerInventory.SwitchSlot(playerInvSlots.IndexOf(hoveringOver), i); // pokud nelze pøidat item do druhého inventáøe, vrátí ho zpìt na své místo
+                playerInventory.SwitchSlot(playerInvSlots.IndexOf(hoveringOver), i); // pokud nelze pøidat pøedmìt do druhého inventáøe, vrátí ho zpìt na své místo
             }
         }
         else // pokud to není hráèùv inventáø
@@ -299,7 +293,7 @@ public class InventoryVisualizer : MonoBehaviour
             Item i = openInventory.SwitchSlot(openInvSlots.IndexOf(hoveringOver), null);
             if (!playerInventory.TryAddItem(i))
             {
-                openInventory.SwitchSlot(openInvSlots.IndexOf(hoveringOver), i); // pokud nelze pøidat item do druhého inventáøe, vrátí ho zpìt na své místo
+                openInventory.SwitchSlot(openInvSlots.IndexOf(hoveringOver), i); // pokud nelze pøidat pøedmìt do druhého inventáøe, vrátí ho zpìt na své místo
             }
             else
             {
@@ -312,7 +306,7 @@ public class InventoryVisualizer : MonoBehaviour
         }
     }
 
-    private void SwitchHoldingItemWithSlot() // manuální pøesouvání itemù
+    private void SwitchHoldingItemWithSlot() // manuální pøesouvání pøedmìtù
     {
         if (playerInvSlots.Contains(hoveringOver))
         {
@@ -366,8 +360,7 @@ public class InventoryVisualizer : MonoBehaviour
         }
     }
 
-    // WIP
-    public void OpenInventory(Inventory inv=null)
+    public void OpenInventory(Inventory inv=null) // otevøení inventáøe
     {
         isInventoryOpen = true;
         playerSlotsParent.transform.localScale = Vector3.one;

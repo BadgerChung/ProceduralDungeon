@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         ttl -= Time.deltaTime;
-        if (ttl <= 0) Destroy(gameObject);
+        if (ttl <= 0) Destroy(gameObject); // pokud existuje projektil pøíliš dlouho, znièí se
     }
 
 }

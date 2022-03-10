@@ -22,11 +22,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         
     }
-
     
     void Update()
     {
-        if (interactables.Count > 0)
+        if (interactables.Count > 0) // vybírá nejbližší interagovatlný objekt pokud je jich v blízkosti hráøe více
         {
             Interactable closest = GetClosestInteractable();
             if(lastClosest != closest)
@@ -42,7 +41,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private Interactable GetClosestInteractable()
+    private Interactable GetClosestInteractable() // vracá nejbližší objekt
     {
         float minDistance = float.MaxValue;
         Interactable closest = null;

@@ -41,7 +41,7 @@ public class DungeonGenerator : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        seed = Random.Range(0, 600);
+        seed = Random.Range(0, 600); // generace seed
     }
 
     private void Start()
@@ -49,7 +49,7 @@ public class DungeonGenerator : MonoBehaviour
         RunProceduralGeneration();
     }
 
-    public void RunProceduralGeneration()
+    public void RunProceduralGeneration() // spuštìní generace
     {
 
         Random.InitState(seed);
@@ -90,7 +90,7 @@ public class DungeonGenerator : MonoBehaviour
         tilemapVisualizer.GenerateWallTiles(wallPositions); // vykreslí pozice tilù zdí z floorPositions (nepoužívá pøímo pozice zfloorPositions, ale upravuje je)
 
         ObjectGenerator.InitObjectGenerator(roomsPositions);
-        Vector2Int portalPosition = ObjectGenerator.GetPortalPosition();
+        Vector2Int portalPosition = ObjectGenerator.GeneratePortalPosition();
         HashSet<Vector2Int> chestPositions = ObjectGenerator.GenerateChestPositions();
         HashSet<Vector2Int> enemyPositions = ObjectGenerator.GenerateEnemyPositions();
         wallPositions.UnionWith(chestPositions);

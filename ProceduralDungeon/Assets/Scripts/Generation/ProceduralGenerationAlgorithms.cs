@@ -28,7 +28,7 @@ public static class ProceduralGenerationAlgorithms
         List<Vector2Int> corridor = new List<Vector2Int>();
         Vector2Int currentPosition = startPosition;
 
-        corridor.Add(currentPosition); // bez tohoto by se první startPosition nepøidala do listu, protože už by prošla forem
+        corridor.Add(currentPosition); // bez tohoto by se první startPosition nepøidala do listu, protože už by prošla for
 
         for (int i = 0; i < corridorLength; i++)
         {

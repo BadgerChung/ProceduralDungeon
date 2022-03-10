@@ -22,6 +22,6 @@ public class PortalInteractable : Interactable
     public override void Interact()
     {
         CurrentRun.currentRun = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // vygeneruje novou úroveò
     }
 }

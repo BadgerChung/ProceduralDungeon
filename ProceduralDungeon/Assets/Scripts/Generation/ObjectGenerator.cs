@@ -11,7 +11,7 @@ public static class ObjectGenerator
 
     private static bool initialized = false;
 
-    public static void InitObjectGenerator(List<HashSet<Vector2Int>> roomsPositions)
+    public static void InitObjectGenerator(List<HashSet<Vector2Int>> roomsPositions) // hledá a pøidává validní pozice do seznamu
     {
         validObjectPositions = new List<List<Vector2Int>>();
 
@@ -33,7 +33,7 @@ public static class ObjectGenerator
         initialized = true;
     }
 
-    private static bool HasAllNeighbours(Vector2Int position, HashSet<Vector2Int> positions)
+    private static bool HasAllNeighbours(Vector2Int position, HashSet<Vector2Int> positions) // kontroluje sousední pozice
     {
         for(int x = -1; x <= 1; x++)
         {
@@ -48,19 +48,19 @@ public static class ObjectGenerator
         return true;
     }
 
-    private static void RemoveAllNeighbours(Vector2Int position, List<Vector2Int> positions)
+    private static void RemoveAllNeighbours(Vector2Int position, List<Vector2Int> positions) // maže sousední pozice ze seznamu
     {
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
             {
                 Vector2Int currentPosition = position + new Vector2Int(x, y);
-                /*if(positions.Contains(currentPosition))*/ positions.Remove(currentPosition);
+                positions.Remove(currentPosition);
             }
         }
     }
 
-    public static HashSet<Vector2Int> GenerateChestPositions()
+    public static HashSet<Vector2Int> GenerateChestPositions() // generace pozic pro truhly
     {
         if (!initialized) throw new InvalidOperationException("OBJECT GENERATOR NENÍ INICIALIZOVÁN");
 
@@ -77,7 +77,7 @@ public static class ObjectGenerator
         return chestPositions;
     }
 
-    public static HashSet<Vector2Int> GenerateEnemyPositions()
+    public static HashSet<Vector2Int> GenerateEnemyPositions() // generace pozic pro nepøátele
     {
         if (!initialized) throw new InvalidOperationException("OBJECT GENERATOR NENÍ INICIALIZOVÁN");
 
@@ -100,7 +100,7 @@ public static class ObjectGenerator
         return enemyPositions;
     }
 
-    public static Vector2Int GetPortalPosition()
+    public static Vector2Int GeneratePortalPosition() // generace pozice pro portál
     {
         List<Vector2Int> room = validObjectPositions[Random.Range(1, validObjectPositions.Count)];
         Vector2Int pos = room[Random.Range(0, room.Count)];

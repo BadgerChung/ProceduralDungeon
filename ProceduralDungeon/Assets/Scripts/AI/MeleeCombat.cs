@@ -19,13 +19,13 @@ public class MeleeCombat : Combat
         this.cooldown = cooldown;
     }
 
-    public override bool Update()
+    public override bool Update() 
     {
         currentCooldown -= Time.deltaTime;
         if(target != null && currentCooldown < 0)
         {
             float dist = Vector3.Distance(transform.position, target.transform.position);
-            if(dist < range)
+            if(dist < range) // pokud je cíl v dostateèné blízkoti, spustí se útok
             {
                 Attack();
                 currentCooldown = cooldown;
@@ -36,11 +36,10 @@ public class MeleeCombat : Combat
         return false;
     }
 
-    private void Attack()
+    private void Attack() // útok
     {
         target.Damage(damage);
         currentCooldown = cooldown;
-        // ještì by to chtìlo animaci útoku
     }
 
 }
